@@ -11,7 +11,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: '2025H-420-911-MA',
-  tagline: 'Concepts de programmation 1',
+  tagline: "Systèmes d'exploitation",
   // favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -26,7 +26,7 @@ const config = {
   projectName: '2025H-420-911-MA', // Usually your repo name.
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenMarkdownLinks: 'throw',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -72,7 +72,7 @@ const config = {
         }
       },
       navbar: {
-        title: 'Concepts de programmation 1',
+        title: "Système d'exploitation",
         logo: {
           alt: 'Site Logo',
           src: 'img/911.svg',
@@ -84,7 +84,6 @@ const config = {
             position: 'left',
             label: 'Accueil',
           },
-          {to: 'https://archambaultv-prof.github.io/programmation-python/', label: 'Notes de cours', position: 'left'},
           {
             href: 'https://github.com/archambaultv-prof/2025H-420-911-MA/',
             label: 'GitHub',

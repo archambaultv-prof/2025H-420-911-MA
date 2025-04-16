@@ -1,0 +1,185 @@
+---
+sidebar_position: 4
+sidebar_label: Bus, interfaces et protocoles
+description: Bus, interfaces et protocoles d'entrée et sortie
+---
+
+# 🚌 Bus, interfaces et protocoles d'entrée et sortie
+
+Nous savons maintenant qu'il existent plusieurs types de périphériques d'entrée
+et de sortie. Mais comment sont-ils connectés à l'ordinateur ? Comment
+communiquent-ils entre eux ? C'est ce que nous allons voir dans cette section.
+
+D'abord, quelques définitions. Ces définitions deviendront plus intuitives
+au fur et à mesure que nous avancerons dans le cours.
+
+## Définitions
+
+### 🧱 Bus
+
+> ❓ Quelles lignes relient *physiquement* les composants entre eux pour
+> transmettre données, adresses et commandes ?
+
+Un bus est un ensemble de lignes physiques (pistes sur la carte mère)
+permettant aux composants internes d’un ordinateur (CPU, RAM, périphériques) de
+transmettre des informations. Il peut transporter des données, des adresses ou
+des signaux de contrôle. [PCI, PCIe, I2C et SPI](./acronymes.mdx) sont des
+exemples de bus.
+
+### 🔌 Connecteur
+
+> ❓ Comment est-ce que je branche physiquement un appareil à un autre ?
+
+Un connecteur est un élément matériel (fiche + port) qui permet la connexion
+physique entre deux appareils ou composants. Il supporte une interface, mais ne
+la définit pas à lui seul. [USB-C, HDMI, RJ45, M.2, SATA, PCIe x16](./acronymes.mdx) sont des
+exemples de connecteurs.
+
+### 📡 Interfaces et protocoles
+
+> ❓ Comment les deux appareils sont interconnectés, électriquement et
+> logiquement ? Quelles règles utilisent les appareils pour se comprendre ?
+
+Une interface est une spécification (souvent normalisée) qui décrit comment
+deux composants échangent des données. Elle comprend souvent la spécification
+physique (connecteurs, câblage) et la spécification logique (protocoles de
+communication, signaux).
+
+Un protocole est un ensemble de règles logiques permettant à deux composants de
+s’échanger des informations de manière structurée.
+
+Des exemples d'interfaces et de protocoles sont : [USB](./acronymes.mdx) (2.0,
+3.2, 4), [HDMI](./acronymes.mdx) (1.4, 2.0, 2.1), [SATA](./acronymes.mdx) (I,
+II, III), Ethernet, DisplayPort, [NVMe](./acronymes.mdx), etc.
+
+:::warning
+
+Pour certains, le terme interface et protocole sont interchangeables. Pour
+d'autres, le protocole se concentre uniquement sur la partie logique, et non
+physique, de la communication.
+
+:::
+
+---
+
+## Topologie des bus : Shared vs Point-to-Point
+
+## Bus partagé (Shared bus)
+
+Un bus partagé est une ligne de communication unique utilisée par plusieurs
+composants pour transmettre des données, des adresses et des signaux de
+contrôle. Les composants doivent attendre leur tour pour parler, comme dans une
+conversation à plusieurs sur une seule ligne téléphonique.
+
+#### Avantages :
+
+- Moins de câblage (un seul bus à partager).
+- Simplicité de fabrication.
+
+####  Inconvénients :
+
+- Risque de collisions (deux composants parlent en même temps).
+- Besoin d’un système d’arbitrage (priorité, délais).
+- Performances limitées (partage de bande passante).
+- Plus il y a de composants, plus c’est lent.
+
+#### Exemples
+
+- PCI (bus d’extension partagé dans les années 1990–2000)
+- IDE/PATA (deux disques sur une seule nappe)
+- ISA (bus de communication pour les cartes d’extension)
+
+## Bus point-à-point
+
+Avec le temps, les architectures ont évolué vers des connexions dédiées entre
+chaque composant et le CPU ou le chipset. On parle alors de bus point-à-point,
+car chaque périphérique dispose de son propre canal de communication.
+
+#### Avantages
+
+- Aucune collision possible
+- Performances indépendantes pour chaque périphérique
+- Moins de latence, plus de fiabilité
+- Architecture plus facile à étendre
+
+#### Inconvénients
+
+- Plus de câblage/pistes sur la carte mère
+- Complexité de conception
+
+#### Exemples
+
+- PCIe (chaque carte a ses propres lignes)
+- SATA (un câble par disque)
+- USB. USB permet de connecter plusieurs périphériques sur un même câble (hub), mais
+  chaque périphérique a son propre canal de communication, car le CPU (chipset)
+  interroge chaque périphérique individuellement. Donc même si physiquement
+  plusieurs périphériques partagent le câble (via un hub), à un instant donné,
+  un seul dialogue est actif.
+
+---
+
+## Le rôle de la carte mère
+
+La carte mère est le support physique principal qui relie tous les composants
+d’un ordinateur : CPU, RAM, chipset, SSD, ports USB, etc. Elle contient des
+pistes conductrices qui forment les bus physiques de communication.
+
+Elle agit comme un réseau autoroutier :
+
+- Des voies rapides pour la RAM, les GPU (PCIe x16)
+- Des voies secondaires pour l’USB, SATA, audio
+- Des ponts de communication entre les composants via le chipset
+
+La carte mère fournit également :
+
+- L’alimentation électrique aux composants
+- Les connecteurs (ports) pour brancher les périphériques
+- Les circuits de contrôle pour initialiser et gérer les communications
+
+De façon très simplifiée, vous pouvez voir la carte mère comme un grand réseau
+de bus physiques et de connecteurs, permettant aux différents composants de
+communiquer entre eux.
+
+---
+
+## Communication CPU – Chipset – Périphériques
+
+#### Le CPU (processeur)
+
+Les CPU sont des unités de traitement central qui exécutent des
+instructions et gèrent les calculs. En gros, c'est le cerveau de l'ordinateur. En gros, un processeur:
+
+- Gère les calculs, les instructions, les accès mémoire
+- Peut communiquer directement avec certains périphériques (très rapides) :
+    - RAM (via contrôleur mémoire intégré)
+    - GPU (via PCIe x16)
+    - SSD NVMe (PCIe x4)
+
+Ces connexions sont point-à-point et très rapides
+
+#### Le Chipset (ou PCH)
+
+Le chipset, aussi appelé Platform Controller Hub (PCH) dans les architectures
+récentes d'Intel, est un composant situé sur la carte mère qui agit comme un
+hub de communication entre le CPU et les autres périphériques moins rapides. Il
+permet notamment de :
+
+- Gérer les communications entre :
+
+  - Les ports USB
+
+  - Le stockage SATA (disques durs, SSD 2.5")
+
+  - Le réseau Ethernet ou Wi-Fi intégré
+
+  - Le BIOS / UEFI
+
+  - Les ports d’extension (PCIe supplémentaires, audio, etc.)
+
+- Offrir des lignes PCIe additionnelles pour des cartes d'extension (souvent
+  moins rapides que celles reliées directement au CPU)
+
+Même si le chipset est physiquement séparé du CPU, il est connecté
+point-à-point au CPU via un bus DMI (Direct Media Interface), qui est rapide
+mais partagé entre tous les périphériques qui passent par le chipset.
