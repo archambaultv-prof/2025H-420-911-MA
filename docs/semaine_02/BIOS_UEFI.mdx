@@ -1,0 +1,75 @@
+---
+sidebar_position: 3
+sidebar_label: BIOS et UEFI
+description: Comprendre le rôle du BIOS et de l'UEFI
+---
+
+# Le rôle du BIOS et de l'UEFI
+
+Quand vous appuyez sur le bouton physique ON de votre ordinateur, que se passe-t-il
+exactement ? Avant même que Windows ne s'affiche, une série d'étapes cruciales
+sont exécutées grâce à ce qu’on appelle le firmware système — historiquement le
+BIOS, aujourd’hui souvent remplacé ou complété par l’[UEFI](https://uefi.org/).
+
+## Rôle du BIOS / UEFI
+
+Le BIOS (Basic Input/Output System) et l’UEFI (Unified Extensible Firmware
+Interface) sont des firmwares préinstallés *sur la carte mère*. Leur rôle est :
+
+- D’effectuer les premiers tests matériels au démarrage (POST — Power-On Self Test).
+- De localiser un périphérique de démarrage (ex. disque dur, SSD) contenant un système d’exploitation.
+- De configurer les composants matériels de base (RAM, CPU, périphériques d’entrée/sortie).
+- De fournir une interface entre le matériel et le système d’exploitation.
+- De permettre l’accès à certaines options système (ordre de démarrage, mot de passe, options de virtualisation, etc.).
+
+## Ce qu’il se passe au démarrage
+
+Voici une séquence simplifiée de ce qu'il se passe depuis l’arrivée du courant
+:
+
+1. **Appui sur le bouton d’alimentation:** Le courant alimente la carte mère.
+
+2. **Activation de la puce de firmware:** Une petite mémoire non-volatile, souvent une ROM (EEPROM) soudée à la carte mère, contient le BIOS ou l’UEFI.
+
+3. **POST (Power-On Self Test):** Le firmware vérifie la mémoire RAM, le processeur, le clavier, les cartes graphiques, etc.
+
+4. **Initialisation des bus et périphériques:** Le CPU s’appuie sur le firmware pour savoir comment parler aux périphériques (PCIe, USB, etc.).
+
+5. **Détection du périphérique de démarrage:** Le firmware lit le premier secteur du disque de démarrage (MBR pour BIOS, ou table GPT + fichier .efi pour UEFI).
+
+6. **Chargement du chargeur de démarrage (bootloader):** Le BIOS lance un programme comme GRUB ou Windows Boot Manager, qui à son tour lance le système d’exploitation.
+
+7. **Passage de relais au système d’exploitation:** Une fois le noyau du système d’exploitation lancé, le BIOS/UEFI reste en arrière-plan (UEFI peut rester accessible via ses services d'exécution).
+
+## Où sont stockés BIOS et UEFI ?
+
+Ils sont stockés dans une mémoire non-volatile sur la carte mère, souvent sous
+forme de puce [EEPROM](../semaine_01/acronymes.mdx).
+
+## Différences entre BIOS et UEFI
+
+La table ci-dessous résume les principales différences entre le BIOS et l’UEFI :
+
+Aspect | BIOS | UEFI
+------ | ---- | ----
+Interface utilisateur | Texte uniquement | Interface graphique possible
+Taille maximale du disque | ~2 To (limite MBR) | > 9 Zo avec GPT
+Type de partitions supportées | MBR | GPT
+Démarrage sécurisé (Secure Boot) | ❌ Non | ✅ Oui
+Extension possible (drivers) | ❌ Non | ✅ Oui, via applications EFI
+Vitesse de démarrage | Plus lent | Plus rapide
+Présence sur les systèmes récents | Rare | Standard depuis ~2015
+
+## Où le BIOS / UEFI s’insère-t-il dans l’architecture système ?
+
+Dans un PC moderne, le BIOS/UEFI agit comme le premier lien entre :
+
+- Le CPU, qui n’a aucun “programme” en mémoire au départ.
+- Le chipset, qui gère la communication entre CPU et périphériques.
+- Les périphériques de stockage, d’entrée/sortie, et de communication.
+
+## Accéder au BIOS/UEFI sur Windows
+
+Pour accéder au BIOS/UEFI, il faut généralement appuyer sur une touche
+spécifique (comme F2, DEL, ESC) juste après avoir allumé l’ordinateur. Cela
+varie selon le fabricant de la carte mère.

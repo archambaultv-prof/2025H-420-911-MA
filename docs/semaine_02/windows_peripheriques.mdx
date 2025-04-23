@@ -1,0 +1,62 @@
+---
+sidebar_position: 2
+sidebar_label: Périphériques sur Windows
+description: Périphériques sur Windows
+---
+
+# Périphériques sur Windows
+
+Windows offrent des outils pour gérer les périphériques de votre ordinateur.
+Nous allons explorer le Gestionnaire de périphériques, les informations système
+et les pilotes matériels.
+
+## Gestionnaire de périphériques
+
+Le Gestionnaire de périphériques est un outil qui vous permet de visualiser et
+de gérer les périphériques matériels installés sur votre ordinateur. Il vous
+permet de voir les périphériques installés, de mettre à jour les pilotes, de
+désinstaller des périphériques et de résoudre les problèmes matériels.
+
+![Gestionnaire de périphériques](/img/Windows/Gestionnaire_peripheriques.png)
+
+## Informations système
+
+L'outil Informations système fournit des informations détaillées sur le
+matériel et les logiciels de votre ordinateur. Il vous permet de voir les
+informations sur le système d'exploitation, le processeur, la mémoire,
+les périphériques et d'autres composants matériels.
+
+![Informations système](/img/Windows/Informations_systeme.png)
+
+## Pilotes matériels
+
+Un pilote est un logiciel qui sert d’interface entre le système d’exploitation
+et le matériel. Il permet à Windows de communiquer avec un périphérique donné
+(imprimante, souris, carte graphique, etc.) en traduisant les instructions
+générales du système en commandes spécifiques compréhensibles par le matériel.
+
+La table ci-dessous résume les rôles des différents composants :
+
+Composant | Fonction du pilote
+--------- | ----------------
+Matériel | Exécute des tâches physiques (affichage, impression, son...)
+Pilote | Traduit les instructions Windows vers le langage du matériel
+Système Windows | Fournit une interface utilisateur et des APIs standard
+
+### Où sont stockés les pilotes dans Windows ?
+
+Les pilotes sont généralement installés dans :
+
+```
+C:\Windows\System32\drivers
+```
+
+### Mise à jour et installation
+
+Souvent, Windows détecte automatiquement les périphériques et tente de trouver
+un pilote compatible. On parle parfois de Plug and Play (PnP) pour décrire
+ce processus. Si Windows ne trouve pas de pilote, il peut être nécessaire
+de le télécharger manuellement depuis le site du fabricant du matériel.
+
+Les pilotes peuvent être mis à jour dans le Gestionnaire de périphériques, via
+Windows Update ou téléchargés depuis le site du fabricant du matériel.
