@@ -1,0 +1,76 @@
+---
+sidebar_position: 3
+sidebar_label: Sauvegarde de la machine virtuelle
+description: Sauvegarde de la machine virtuelle
+---
+
+# Sauvegarde de la machine virtuelle
+
+Il est important de faire une sauvegarde de la machine virtuelle avant de faire
+des modifications majeures. Cela vous permettra de revenir à un état antérieur
+en cas de problème.
+
+Il existe quelques méthodes pour faire une sauvegarde de la machine virtuelle :
+
+- Créer un instantané (snapshot) de la machine virtuelle
+- Cloner la machine virtuelle
+- Copier les fichiers de la machine virtuelle sur un autre disque dur ou un autre emplacement
+  réseau
+
+## Créer un instantané (snapshot) de la machine virtuelle
+
+Une première méthode consiste à créer un instantané (snapshot) de la machine virtuelle. Un
+instantané est une image de l'état actuel de la machine virtuelle. Vous pouvez revenir à cet état à tout moment.
+
+:::warning
+
+Attention, les instantanés sont stockés au même endroit que votre machine virtuelle. Ils ne vous protégeront pas d'une panne de disque dur.
+De plus, ils ne vous protégeront pas d'une corruption de fichier, car ils sont dépendants des fichiers de la machine virtuelle.
+
+:::
+
+Vous pouvez créer un instantané en cliquant sur le bouton "Prendre un instantané" dans la barre d'outils de VirtualBox. Vous pouvez également
+créer un instantané en allant dans le menu "Machine" et en sélectionnant "Prendre un instantané".
+![image](/img/VirtualBox/Instantane-1.png)
+
+Vous pouvez ensuite donner un nom et une description à l'instantané.
+![image](/img/VirtualBox/Instantane-2.png)
+
+Pour voir la liste des instantanés, allez dans le menu "Machine" et sélectionnez "Outils" et ensuite "Afficher les instantanés". 
+Vous pouvez également accéder aux outils via l'icône "hamburger" à côté du nom de la machine virtuelle.
+![image](/img/VirtualBox/Instantane-3.png)
+
+Vous pourrez alors voir la liste des instantanés de la machine virtuelle.
+![image](/img/VirtualBox/Instantane-4.png)
+
+## Cloner la machine virtuelle
+
+Une autre méthode consiste à cloner la machine virtuelle. Un clone de
+la machine virtuelle est une copie exacte de la machine virtuelle, y compris
+les fichiers de disque dur virtuel et les paramètres de la machine virtuelle.
+
+:::tip
+
+Un clone est une excellente façon de partager une machine virtuelle avec un autre utilisateur.
+
+:::
+
+:::warning
+
+Les instantanés ne sont pas clonés. Le clone est une copie d'un état précis. Vous pouvez
+toutefois choisir de baser cet état sur un instantané.
+
+:::
+
+Pour créer un clone de la machine virtuelle, allez dans le menu "Machine" et sélectionnez "Cloner".
+![image](/img/VirtualBox/Clone.png)
+
+## Copier les fichiers de la machine virtuelle
+
+Finalement, il est toujours possible de copier les fichiers de la machine
+virtuelle sur un autre disque dur ou un autre emplacement réseau. Cette méthode simple
+reste une bonne façon pour vous de sauvegarder votre VM sur un autre disque dur ou un autre emplacement réseau.
+
+Une façon simple de savoir où se trouvent les fichiers de la machine virtuelle est
+d'aller dans le menu "Machine" et de sélectionner "Déplacer".
+![image](/img/VirtualBox/Deplacer.png)
