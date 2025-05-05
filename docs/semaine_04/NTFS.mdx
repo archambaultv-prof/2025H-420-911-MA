@@ -1,0 +1,128 @@
+---
+sidebar_position: 2
+sidebar_label: NTFS
+description: Système de fichiers NTFS
+---
+
+# Système de fichiers NTFS
+
+## Introduction : Le rôle d’un système de fichiers
+
+Le système de fichiers agit comme l’intermédiaire entre le matériel de stockage
+et le système d’exploitation afin d’assurer l'organisation, la sécurité,
+l’accès, et l’intégrité des données stockées. Chaque OS a généralement des
+systèmes de fichiers privilégiés (par exemple NTFS pour Windows, ext4 pour
+Linux, APFS pour macOS), optimisés pour ses besoins spécifiques.
+
+Le système de fichiers remplit plusieurs fonctions critiques :
+
+- **Gestion des données :** Stockage des fichiers sous forme structurée.
+- **Organisation hiérarchique :** Structuration des fichiers en dossiers et sous-dossiers.
+- **Contrôle d’accès :** Gestion des permissions et sécurisation des données.
+- **Gestion de l’espace :** Optimisation du stockage des données.
+- **Fiabilité et performance :** Récupération en cas d’erreurs, journalisation des modifications et gestion efficace des fichiers volumineux.
+
+
+## NTFS
+
+NTFS (**New Technology File System**) est un système de fichiers développé par
+Microsoft en 1993, introduit avec Windows NT 3.1 pour remplacer l’ancien
+système FAT (File Allocation Table). NTFS a été conçu pour répondre aux
+exigences croissantes de robustesse, de sécurité et de performance dans les
+environnements professionnels.
+
+### Organisation interne
+
+NTFS utilise une structure appelée **Master File Table (MFT)**. Il s'agit d'une
+  table centrale stockant des entrées décrivant chaque fichier et dossier du
+  volume NTFS. Chaque entrée contient des attributs du fichier (nom, taille,
+  permissions, emplacement physique des données, etc.).
+
+
+### Organisation hiérarchique
+
+NTFS organise les fichiers et dossiers de manière hiérarchique, permettant
+  une navigation intuitive et structurée. Chaque volume NTFS est représenté
+  par une arborescence de dossiers, où chaque dossier peut contenir des
+  fichiers et d'autres dossiers.
+
+- **Volume :** Unité de stockage logique (ex. : disque dur, partition).
+- **Dossier :** Conteneur pour les fichiers et autres dossiers.
+- **Fichier :** Unité de données stockée sur le volume (ex. : document, image).
+
+### Permissions et sécurité NTFS
+
+NTFS utilise les **ACL (Access Control Lists)** pour sécuriser les fichiers et dossiers.
+
+### Principales permissions NTFS
+
+* Contrôle total
+* Modification
+* Lecture et exécution
+* Lecture simple
+* Écriture
+* Permissions spéciales avancées (par exemple : prise de possession, suppression).
+
+
+### Attributs avancés de NTFS
+
+NTFS offre plusieurs attributs particuliers applicables à des fichiers/dossiers :
+
+* **Compression :** Permet une compression transparente au niveau du système de
+  fichiers. Économie d’espace disque, mais légère pénalité en performance.
+
+* **Chiffrement de fichiers et dossiers (EFS - Encrypting File System) :**
+  Chiffrement transparent des fichiers/dossiers pour sécuriser les données.
+
+* **Chiffrement de disque BitLocker :**  Chiffrement complet du volume pour
+  protéger les données contre les accès non autorisés.
+
+* **Attributs standards :** Caché, lecture seule, archive, système.
+
+* **Hard links / Liens symboliques :** Liens vers des fichiers/dossiers dans
+    d’autres emplacements. C'est à dire qu'un même fichier peut être accessible
+    depuis plusieurs emplacements.
+
+
+### Journalisation
+
+NTFS est un système **journalisé**, c’est-à-dire qu’il maintient un journal
+(**\$LogFile**) de toutes les modifications effectuées sur le volume. Ceci
+permet de récupérer rapidement les données et garantir l'intégrité après un
+crash ou une coupure électrique.
+
+:::warning
+
+La journalisation permet de garantir l'intégrité des méta-données et non pas des
+  données elles-mêmes. Elle ne remplace pas les sauvegardes régulières.
+
+:::
+
+
+## Outils NTFS essentiels sous Windows
+
+| Outil                   | Fonction                                     |
+| ----------------------- | -------------------------------------------- |
+| `chkdsk`                | Vérifie et répare l’intégrité NTFS.          |
+| `icacls`                | Affiche/modifie les permissions NTFS.        |
+| `takeown`               | Permet de prendre la propriété d'un fichier. |
+| Explorateur de fichiers | Gestion graphique standard.                  |
+
+
+## NTFS comparé à d’autres systèmes Windows
+
+| Aspect             | NTFS         | FAT32       | exFAT   | reFS                     |
+| ------------------ | ------------ | ----------- | ------- | ------------------------ |
+| Sécurité           | ACL avancées | Très limité | Limité  | ACL avancées             |
+| Compression        | Oui          | Non         | Non     | Non (mais déduplication) |
+| Chiffrement        | Oui          | Non         | Non     | Non                      |
+| Taille fichier max | 16 exa       | 4 Go        | 128 Po  | 16 exa                   |
+| Journalisation     | Oui          | Non         | Non     | Oui                      |
+| Fiabilité          | Haute        | Faible      | Moyenne | Très haute (serveurs)    |
+
+
+## Rérérences
+
+- [NTFS - Microsoft](https://learn.microsoft.com/fr-fr/windows-server/storage/file-server/ntfs-overview)
+- [NTFS (fr)](https://fr.wikipedia.org/wiki/NTFS)
+- [NTFS (en)](https://en.wikipedia.org/wiki/NTFS)

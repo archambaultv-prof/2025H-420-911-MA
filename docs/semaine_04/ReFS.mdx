@@ -1,0 +1,46 @@
+---
+sidebar_position: 4
+sidebar_label: ReFS
+description: Système de fichiers ReFS
+---
+
+# Système de fichiers ReFS
+
+ReFS (Resilient File System) est un système de fichiers développé par
+Microsoft, conçu pour être plus résilient et fiable que NTFS. Il est
+principalement utilisé dans les environnements de serveur et de stockage en
+réseau.
+
+## Caractéristiques principales
+
+- **Résilience :** ReFS utilise une architecture de stockage qui permet de
+  détecter et de corriger les erreurs de données, garantissant ainsi
+  l'intégrité des fichiers.
+- **Scalabilité :** ReFS peut gérer des volumes de très grande taille, ce qui
+  le rend adapté aux applications nécessitant un stockage massif de données.
+- **Optimisation pour les données virtuelles :** ReFS est optimisé pour
+  fonctionner avec des machines virtuelles et des environnements de
+  virtualisation, offrant des performances améliorées dans ces scénarios.
+- **Support de la déduplication :** ReFS prend en charge la déduplication des
+  données, ce qui permet de réduire l'espace de stockage utilisé en éliminant
+  les copies redondantes de données.
+- **Pas de journalisation :** Contrairement à NTFS, ReFS n'utilise pas de
+  journalisation, ce qui peut améliorer les performances dans certains
+  scénarios, mais peut également rendre la récupération de données plus
+  complexe en cas de panne.
+
+## ReFS n'est pas un remplacement de NTFS
+
+ReFS n'est pas destiné à remplacer NTFS, mais plutôt à compléter ses
+fonctionnalités. Il est conçu pour des cas d'utilisation spécifiques, tels que
+le stockage de données massives, la virtualisation et les environnements de
+serveurs.
+
+NTFS reste le système de fichiers par défaut pour les systèmes d'exploitation
+Windows. Par exemple NTFS prend en charge le chiffrement du système de fichiers
+et la compression de fichiers, ce qui n'est pas le cas de ReFS. De plus, ReFS
+n'est pas pris en charge sur les disques amovibles.
+
+## Références
+
+- [Documentation Microsoft sur ReFS](https://learn.microsoft.com/fr-fr/windows-server/storage/refs/refs-overview)
