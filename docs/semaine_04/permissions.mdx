@@ -1,0 +1,91 @@
+---
+sidebar_position: 5
+sidebar_label: Permissions NTFS
+description: Permissions NTFS
+---
+
+# Permissions NTFS
+
+## Qu’est-ce qu’une permission ?
+
+Une permission est une autorisation donnée à un utilisateur ou un groupe
+d’utilisateurs pour effectuer une action sur un fichier ou un dossier :
+
+- Lire
+- Écrire
+- Modifier
+- Supprimer
+- Lister le contenu (dans le cas d’un dossier)
+
+## Utilisateur vs Groupe
+
+Les permissions sont définies pour des objets de sécurité :
+
+- Utilisateurs locaux (ex. : Vincent)
+- Groupes locaux (ex. : Administrateurs, Utilisateurs)
+
+Un groupe est un ensemble d’utilisateurs. On peut attribuer des permissions à un
+groupe, et tous les utilisateurs de ce groupe héritent de ces permissions.
+
+:::warning
+
+Si un utilisateur appartient à deux groupes et qu’un des groupes a une permission
+refusée, celle-ci l’emporte.
+
+:::
+
+## Concept de propriétaire
+
+Dans Windows, chaque objet (fichier, dossier, clé de registre, etc.) a un
+propriétaire. Le propriétaire a des droits spéciaux, dont le plus important est
+celui de modifier les permissions, même s’il n’a pas le contrôle total.
+
+> Par défaut, le créateur d’un fichier ou dossier en devient le propriétaire.
+
+### Pourquoi ce concept est-il important ?
+
+Un utilisateur peut ne pas avoir la permission de lecture, mais il pourra
+reprendre possession du fichier et modifier les ACL (Access Control List).
+
+Cela peut poser un risque de sécurité si des utilisateurs peuvent s’approprier
+des fichiers sensibles.
+
+Seuls les administrateurs (ou les groupes avec ce droit) peuvent changer le
+propriétaire via l’interface graphique ou des outils comme `takeown` et `icacls`.
+
+## Types de permissions NTFS
+
+| Nom                   | Fichier                                  | Dossier                  |
+| --------------------- | ---------------------------------------- | ------------------------ |
+| Lecture               | ✅ Voir le contenu                        | ✅ Lister les fichiers    |
+| Écriture              | ✅ Modifier le contenu                    | ✅ Créer des fichiers     |
+| Exécution             | ✅ Lancer un exécutable                   | ✅ Lancer un exécutable   |
+| Suppression           | ✅ Supprimer le fichier                   | ✅ Supprimer le dossier   |
+| Lecture des attributs | ✅ Lire les métadonnées                   | ✅ Lire les métadonnées   |
+| Modification          | ✅ Toutes les actions sauf contrôle total | ✅ Idem                   |
+| Contrôle total        | ✅ Toutes les permissions, y compris changement du propriétaire (owner) et des permissions  | ✅ Idem |
+
+## Héritage des permissions
+
+Par défaut, les permissions sont héritées du dossier parent. On peut désactiver
+l’héritage pour personnaliser les permissions.
+
+## Modifier les permissions
+
+### Méthode graphique (Explorateur Windows)
+
+- Clic droit sur le fichier/dossier → Propriétés
+- Onglet Sécurité
+- Bouton Modifier…
+- Ajouter ou supprimer un utilisateur/groupe
+- Cocher les permissions à Autoriser ou Refuser
+
+### Méthode en ligne de commande
+
+- [`icacls`](https://learn.microsoft.com/fr-fr/windows-server/administration/windows-commands/icacls) : Affiche et modifie les permissions NTFS
+- `takeown` : Prend possession d’un fichier ou d’un dossier
+
+## Partage réseau
+
+Attention, les partages réseau ont leurs propres permissions, en plus de NTFS
+(double contrôle !).
