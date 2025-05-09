@@ -1,0 +1,36 @@
+---
+sidebar_position: 3
+sidebar_label: Permissions
+description: Permissions Windows
+---
+
+# Permissions NTFS
+
+**Durée** : 20 minutes
+
+**Individuel**
+
+## 🎯 Objectif pédagogique
+
+L'objectif de cet exercice est :
+
+- D'apprendre à créer des utilisateurs et des groupes d'utilisateurs.
+- De vous familiariser avec les permissions NTFS et de comprendre comment elles
+  fonctionnent dans un environnement Windows.
+
+## 📜 Énoncé
+
+- Créez un [deuxième
+  utilisateur](https://support.microsoft.com/en-us/windows/manage-user-accounts-in-windows-104dc19f-6430-4b49-6a2b-e4dbd1dcdf32)
+  sur votre machine Windows 11.
+- Connectez-vous avec le nouvel utilisateur pour vérifier
+  que tout fonctionne. Ceci va aussi créer son dossier `C:\Users\<nom_utilisateur>`.
+- Dans le dossier `Documents`, créez un dossier `CFT` (capture de flag) et un fichier `CTF.txt`.
+- Reconnectez-vous avec votre utilisateur principal et essayez d'accéder au dossier `CFT` et au fichier `CTF.txt`.
+  - Windows vous demandera sûrement de continuer en tant qu'administrateur, ne serait-ce que pour entrer dans le dossier
+    `C:\Users\<nom_utilisateur>`.
+  - Notez ensuite que vous avez accès à tous les dossiers. Pourquoi ?
+- Modifiez les permissions NTFS du dossier `CFT` pour vous retirer l'accès. Attention, il faut désactiver l'héritage
+  des permissions NTFS.
+- Testez que vous pouvez toujours accéder aux autres dossiers, mais plus à celui-ci.
+
