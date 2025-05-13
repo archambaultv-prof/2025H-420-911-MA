@@ -1,0 +1,77 @@
+---
+sidebar_position: 2
+sidebar_label: Contrôle de Compte Utilisateur (UAC)
+description: Contrôle de Compte Utilisateur (UAC)
+---
+
+# Contrôle de Compte Utilisateur (UAC)
+
+## Introduction
+
+Le contrôle de compte utilisateur (UAC) est une fonctionnalité de sécurité
+introduite dans Windows Vista et présente dans toutes les versions ultérieures
+de Windows. Elle vise à empêcher les modifications non autorisées du système
+d’exploitation en demandant une confirmation explicite avant d’exécuter une
+action nécessitant des privilèges élevés.
+
+![UAC](/img/Windows/User_Account_Control.png)
+
+## Objectifs du UAC
+
+* Limiter les privilèges des comptes, même administrateurs, tant qu'une élévation n'est pas nécessaire.
+* Empêcher l'exécution silencieuse de logiciels malveillants avec des droits d’administrateur.
+* Favoriser une meilleure séparation entre les utilisateurs standard et administrateurs.
+* Réduire l'attaque par élévation de privilèges.
+
+
+## Comment ça fonctionne ?
+
+1. **Par défaut**, même les comptes administrateurs exécutent les applications avec des droits standards.
+2. Lorsqu’une tâche exige des privilèges administratifs, Windows affiche une boîte de dialogue UAC :
+
+   * Si l'utilisateur est un administrateur, il peut approuver ou refuser.
+   * Si l'utilisateur est un utilisateur standard, il doit entrer le mot de passe d’un compte administrateur.
+3. Le processus est alors relancé dans un contexte élevé.
+
+
+## Exemple d’actions nécessitant une élévation UAC
+
+* Installer ou désinstaller un programme
+* Modifier les paramètres système ou du registre
+* Ajouter/supprimer des comptes d'utilisateurs
+* Modifier les fichiers dans `C:\Windows` ou `C:\Program Files`
+* Modifier les paramètres de pare-feu ou de sécurité
+
+
+## Niveaux de notification UAC
+
+Les paramètres UAC peuvent être ajustés via **Panneau de configuration →
+Comptes d'utilisateurs → Modifier les paramètres de contrôle de compte
+d’utilisateur** :
+
+| Niveau                                                                                                      | Description                                                                                         |
+| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Toujours m’avertir**                                                                                      | Notification chaque fois qu’un programme ou que vous-même tentez de modifier les paramètres Windows |
+| **M’avertir uniquement lorsque des applications tentent d’apporter des modifications (écran sombre)**       | UAC s’active uniquement pour les programmes, pas pour les changements manuels                       |
+| **M’avertir uniquement lorsque des applications tentent d’apporter des modifications (pas d’écran sombre)** | Comme ci-dessus, mais sans l’effet de verrouillage de l’écran                                       |
+| **Ne jamais m’avertir**                                                                                     | UAC est désactivé — **non recommandé**                                                              |
+
+
+## UAC Virtualization
+
+Pour assurer la compatibilité avec les anciennes applications (32 bits) :
+
+* Le système peut **rediriger** certaines écritures dans des dossiers protégés (comme `C:\Program Files`) vers des dossiers virtuels (`%LOCALAPPDATA%\VirtualStore`).
+* Cela permet aux programmes qui supposent des privilèges élevés de fonctionner partiellement même sans droits admin.
+
+
+## Conseils pratiques
+
+* **Ne désactivez pas UAC** sauf dans des environnements de test spécifiques.
+* Encouragez l’utilisation de comptes **standards** pour les tâches quotidiennes.
+* Utilisez `runas` ou clic-droit → **"Exécuter en tant qu'administrateur"** pour lancer ponctuellement des programmes avec élévation.
+
+
+## Références
+
+* [Documentation Microsoft sur UAC](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/)
