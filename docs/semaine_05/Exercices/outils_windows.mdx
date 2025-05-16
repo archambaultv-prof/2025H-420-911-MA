@@ -4,5 +4,91 @@ sidebar_label: Outils réseaux Windows
 description: Outils réseaux Windows
 ---
 
-# Outils réseaux Windows
+# 🛠️ Exercices pratiques – IP, DHCP et DNS
 
+## 🎯 Objectif pédagogique
+
+Vérifier par vous-même que vous comprenez les grands principes de la
+configuration réseau sous Windows.
+
+## 📜 Énoncé
+
+Faites chaque activité dans votre machine virtuelle. Vous pouvez utiliser un
+fichier pour noter vos réponses et observations.
+
+### Exercice 1 – Observer votre configuration réseau
+
+Apprendre à identifier les informations clés : adresse IP, passerelle, DNS,
+serveur DHCP.
+
+### Étapes :
+
+1. Ouvrez une console (`powershell`) et tapez :
+
+```cmd
+   ipconfig
+```
+Que voyez-vous ? Que signifie chaque information ?
+
+Maintenant tapez :
+
+```cmd
+   ipconfig /all
+```
+
+2. Repérez et notez les informations suivantes :
+
+   * Adresse IPv4 :
+   * Masque de sous-réseau :
+   * Passerelle (default gateway) :
+   * Serveur DHCP :
+   * Serveur(s) DNS :
+   * Adresse MAC :
+
+3. **Question** : Est-ce que votre adresse IP a été attribuée automatiquement
+   (DHCP) ou est-elle statique ?
+
+4. Vérifiez si vous pouvez accéder à Internet :
+
+   ```cmd
+   ping www.google.com
+   ```
+
+   Que se passe-t-il ?
+
+### Exercice 2 – Tester le fonctionnement du DHCP
+
+
+1. Libérez votre adresse IP :
+
+   ```cmd
+   ipconfig /release
+   ```
+
+   Que se passe-t-il ? Avez-vous encore une adresse IP ? Pouvez-vous accéder à
+   Internet ?
+
+2. Demandez-en une nouvelle :
+
+   ```cmd
+   ipconfig /renew
+   ```
+
+   Une nouvelle IP vous a-t-elle été attribuée ? Est-elle dans la même plage que l’ancienne ?
+
+3. **Question** : À quel moment le DHCP intervient-il dans ce processus ?
+
+### Exercice 3 – Trouver une adresse IP
+
+1. Utilisez la commande `ping` pour trouver l’adresse IP de `www.google.com` :
+
+   ```cmd
+   ping www.google.com
+   ```
+
+   Que voyez-vous ? Quelle est l’adresse IP de `www.google.com` ?
+
+2. **Questions** : 
+    - Quelle est l'adresse IP du Collège (`cmaisonneuve.qc.ca`) ?
+    - Quelle est l'adresse IP de `omnivox.cmaisonneuve.qc.ca` ?
+    - S'agit-il de la même adresse ? Pourquoi ?
