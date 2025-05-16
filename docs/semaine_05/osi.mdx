@@ -1,0 +1,228 @@
+---
+sidebar_position: 5
+sidebar_label: Modèle OSI
+description: Modèle OSI
+---
+import OsiModelPng from '/img/OSI_Model_v1.png';
+
+# Modèle OSI
+
+Lorsqu’on envoie des données sur un réseau, une série de transformations,
+d’encodages et d’actions sont nécessaires pour que les données voyagent d’un
+appareil à un autre. Le modèle OSI (Open Systems Interconnection) permet de
+diviser ce processus complexe en étapes logiques, appelées couches, chacune
+ayant un rôle précis.
+
+## Avantages du modèle OSI
+
+- Facilite la conception et la compréhension des réseaux.
+- Permet l’interopérabilité entre des fabricants différents.
+- Organise les protocoles et les responsabilités.
+
+
+## Vue d’ensemble des 7 couches
+
+<img src={OsiModelPng} width="80%"/>
+
+*Source : [Wikipedia](https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI)*
+
+## Détail couche par couche
+
+
+### Couche 1 – Physique (Physical Layer)
+
+**Rôle :**  
+Transmet les **bits bruts** (0 et 1) sur un **support physique** : câble, fibre optique, ondes radio…
+
+**Fonctions :**
+- Définition des **signaux électriques**, optiques ou radio.
+- Synchronisation des bits.
+- Connecteurs et câblage.
+
+**Exemples :**
+- Câble Ethernet (RJ45)
+- Fibre optique
+- Wi-Fi (au niveau de la modulation)
+- Bluetooth
+
+**Ce que voit un programmeur ?** Pas grand-chose. Cette couche est **totalement gérée par le matériel**.
+
+### Couche 2 – Liaison de données (Data Link Layer)
+
+**Rôle :**  
+Permet la communication **locale entre deux machines connectées au même réseau physique**.
+
+**Fonctions :**
+- Découpe les données en **trames** (frames en anglais).
+- Attribution et vérification de l’**adresse MAC** (Media Access Control, unique pour chaque appareil).
+- Détection d’erreurs.
+
+**Exemples de protocoles :**
+- Ethernet
+- Wi-Fi (IEEE 802.11)
+
+**Adresse MAC :**
+- Unique par carte réseau (ex: `00:1A:2B:3C:4D:5E`)
+- Gravée en dur dans le matériel
+
+**Appareils :**
+- Switch
+- Carte réseau (NIC)
+
+**Ce que voit un programmeur ?** Adresse MAC, trames (frames), configuration
+réseau locale, parfois manipulation de paquets au niveau Ethernet (ex :
+Wireshark, Scapy).
+
+### Couche 3 – Réseau (Network Layer)
+
+**Rôle :**  
+Assure le **routage des paquets** d’un réseau à un autre (interconnexion des réseaux).
+
+**Fonctions :**
+- Attribution des **adresses IP** (Internet Protocol).
+- **Routage** entre les sous-réseaux.
+- Fragmentation de paquets.
+
+**Exemples de protocoles :**
+- IP (Internet Protocol)
+- ICMP (utilisé par `ping`)
+- ARP (traduction IP ↔ MAC)
+
+**Appareils :**
+- Routeurs
+
+**Ce que voit un programmeur ?** Adresse IP, sous-réseau, ping, communication
+via sockets (IP/port).
+
+---
+
+### Couche 4 – Transport (Transport Layer)
+
+**Rôle :**  
+Assure le **transport fiable ou non des données entre deux machines**.
+
+**Fonctions :**
+- Segmentation et réassemblage.
+- Contrôle d’erreurs.
+- Contrôle de flux.
+
+**Protocoles principaux :**
+- **TCP** (Transmission Control Protocol)
+  - Fiable, avec accusé de réception.
+  - Ex : HTTP, FTP, SSH
+- **UDP** (User Datagram Protocol)
+  - Non fiable, rapide.
+  - Ex : DNS, jeux vidéo en ligne, VoIP
+
+**Ports :**
+- Identifient les applications sur une machine (ex: port 80 pour HTTP)
+
+**Ce que voit un programmeur ?** Manipulation des sockets TCP/UDP, gestion des
+ports, gestion des erreurs de connexion, timeouts, retransmissions, choix entre
+fiabilité (TCP) et rapidité (UDP).
+
+**Exemples :**
+- En Python : `socket(AF_INET, SOCK_STREAM)` (TCP)
+- `curl http://...` → utilise TCP port 80
+
+---
+
+### Couche 5 – Session (Session Layer)
+
+**Rôle :**  
+Gère les **sessions de communication** entre deux machines. Une session est un
+lien logique entre deux applications.
+
+**Fonctions :**
+- Ouverture, gestion et fermeture de session.
+- Restauration après interruption.
+
+**Protocoles exemples :**
+- NetBIOS
+- RPC (Remote Procedure Call)
+
+**Remarques :**
+- Peu visible en tant que telle dans les applications modernes (souvent
+  combinée avec la couche transport).
+
+---
+
+### Couche 6 – Présentation (Presentation Layer)
+
+**Rôle :**  
+Assure la **traduction, compression et chiffrement** des données.
+
+**Fonctions :**
+- Conversion de formats (ex: texte brut ↔ binaire).
+- Encodage : ASCII, UTF-8, JPEG
+- **Chiffrement SSL/TLS**.
+
+**Exemples concrets :**
+- HTTPS = HTTP + TLS (couche présentation)
+- OpenSSL, GnuTLS
+
+**Ce que voit un programmeur ?** La couche présentation peut être manipulée
+via des librairies comme `ssl` en Python.
+
+---
+
+### Couche 7 – Application
+
+**Rôle :**  
+Fournit des **services réseau aux applications utilisateur**.
+
+**Protocoles :**
+- HTTP / HTTPS
+- FTP
+- SMTP / IMAP / POP3
+- DNS
+
+**Exemples d’applications :**
+- Navigateurs web
+- Clients mail
+- Clients FTP
+- Clients DNS
+
+**Ce que voit un programmeur ?** Vous utilisez tous les jours la couche 7 :
+`fetch()`, `requests.get()`, `socket`, etc.
+
+## Récapitulatif des couches
+
+| N° | Couche        | Fonction principale                     | Exemples de protocoles/appareils |
+|----|---------------|------------------------------------------|----------------------------------|
+| 7  | Application   | Interface utilisateur réseau             | HTTP, FTP, DNS                   |
+| 6  | Présentation  | Traduction, chiffrement, compression     | SSL/TLS, ASCII, JPEG             |
+| 5  | Session       | Gestion de sessions/connexions           | NetBIOS, RPC                     |
+| 4  | Transport     | Transport fiable, segmentation           | TCP, UDP                         |
+| 3  | Réseau        | Routage et adressage logique             | IP, ICMP                         |
+| 2  | Liaison       | Communication locale, adresse MAC        | Ethernet, Wi-Fi (802.11), PPP    |
+| 1  | Physique      | Transmission de bits sur le support      | RJ45, Fibre, Signal radio        |
+
+
+## Exemple de voyage d’un message
+
+Imaginons que vous envoyiez un message HTTP à un serveur distant :
+
+1. **Application (HTTP)** → le navigateur prépare la requête.
+2. **Présentation (TLS)** → la requête est chiffrée.
+3. **Session** → une session sécurisée est ouverte.
+4. **Transport (TCP)** → la requête est découpée en segments.
+5. **Réseau (IP)** → les segments sont encapsulés dans des paquets IP.
+6. **Liaison (Ethernet)** → les paquets sont mis en trames.
+7. **Physique (Câble)** → les trames sont converties en signaux électriques.
+
+Le serveur reçoit dans l’ordre inverse : Physique → Liaison → Réseau … jusqu’à Application.
+
+## Pour les programmeurs
+
+- La couche **Application** correspond à vos appels HTTP/HTTPS.
+- La couche **Transport** (TCP/UDP) explique les problèmes de **latence**,
+  **timeout**, **perte de paquets**.
+- La couche **Réseau** vous aide à comprendre l’**adressage IP**, la
+  **connexion entre clients/serveurs**.
+- Les couches **Liaison et Physique** sont utiles à connaître pour
+  diagnostiquer les problèmes de réseau local.
+
+## Références
+
+- [Modèle OSI sur Wikipedia](https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI)

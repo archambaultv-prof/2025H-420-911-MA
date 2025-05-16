@@ -1,0 +1,151 @@
+---
+sidebar_position: 6
+sidebar_label: Adresse IP et DHCP
+description: Adresse IP et DHCP
+---
+
+# Adresse IP et DHCP
+
+## Qu’est-ce qu’une adresse IP ?
+
+Une adresse IP (Internet Protocol) est une adresse **logique** unique qui
+identifie un appareil sur un réseau.
+
+### Format (IPv4)
+
+Une adresse IPv4 est composée de **4 octets (32 bits)**, généralement affichée sous forme décimale :
+
+```
+
+192.168.1.42
+
+```
+
+Chaque valeur est comprise entre `0` et `255`. Il existe aussi IPv6, mais nous nous
+concentrons ici sur IPv4, le plus courant.
+
+
+## Les 3 composantes d’une configuration IP
+
+Quand une machine est connectée à un réseau, elle utilise **3 informations principales** :
+
+| Élément       | Rôle                                                             | Exemple             |
+|---------------|------------------------------------------------------------------|---------------------|
+| Adresse IP    | Identifie la machine sur le réseau                               | `192.168.1.42`      |
+| Masque de sous-réseau | Indique **quelle portion de l’IP est le réseau**, et quelle portion est l’hôte | `255.255.255.0`     |
+| Passerelle (gateway)  | Point de sortie du réseau local vers l’extérieur (ex. Internet)                | `192.168.1.1`       |
+
+
+### Masque de sous-réseau
+
+Le **masque de sous-réseau** permet de savoir si deux adresses IP sont dans le
+**même réseau local**. Il est composé de 32 bits, comme l’adresse IP. Un bit à
+`1` indique la partie réseau, et un bit à `0` indique la partie hôte. Les bits à `1`
+sont consécutifs, suivis de bits à `0`.
+
+Par exemple, pour le masque `255.255.255.0`, correspondant à `11111111.11111111.11111111.00000000`.
+Ceci indique que les **3 premiers octets** (24 bits) sont pour le réseau, et le dernier octet
+(8 bits) est pour l’hôte.
+
+
+```
+
+Adresse IP        : 192.168.1.42
+Masque            : 255.255.255.0
+Réseau            : 192.168.1.0
+
+```
+
+Les machines dont les adresses IP commencent par `192.168.1.` peuvent communiquer **directement**.
+
+
+### Passerelle par défaut (Default Gateway)
+
+C’est **l’adresse IP du routeur** local. Si une machine veut communiquer avec
+un appareil **en dehors de son réseau local**, elle envoie le paquet à la
+**passerelle**, qui le transmet vers l’extérieur (Internet, autre réseau,
+etc.).
+
+
+## IP statique vs IP dynamique
+
+| Type d’adresse | Définition                                      | Exemple d’usage                            |
+|----------------|-------------------------------------------------|--------------------------------------------|
+| IP statique    | Adresse **fixée manuellement** dans la config   | Serveurs, imprimantes réseau               |
+| IP dynamique   | Adresse attribuée **automatiquement par DHCP**  | Ordinateurs portables, téléphones, clients |
+
+
+## Le protocole DHCP (Dynamic Host Configuration Protocol)
+
+### Objectif
+
+Attribuer automatiquement à chaque machine du réseau :
+- Une adresse IP
+- Un masque de sous-réseau
+- Une passerelle
+- Un ou plusieurs serveurs DNS
+
+
+### Fonctionnement du DHCP
+
+1. **DHCP Discover** : L’appareil envoie un **broadcast** pour chercher un serveur DHCP.
+Un **broadcast** est un message envoyé à **tous les appareils** du réseau local.
+
+2. **DHCP Offer** : Le serveur DHCP répond avec une **offre d’adresse IP** disponible.
+
+3. **DHCP Request** : L’appareil **accepte** l’offre et demande à utiliser l’adresse.
+
+4. **DHCP Ack** : Le serveur **confirme l’attribution** de l’adresse IP.
+
+### Durée du bail (lease)
+
+L’adresse IP est attribuée **temporairement** : c’est un **bail** (par exemple 24 h).  
+Lorsque le bail expire, l’appareil doit renouveler l’adresse IP.
+
+:::info
+
+Sur un réseau personnel ou de petite entreprise, c'est souvent le routeur qui
+joue le rôle de serveur DHCP. Il attribue les adresses IP aux appareils connectés. Pour un réseau
+plus complexe, un serveur dédié peut être utilisé.
+
+:::
+
+
+## Outils de diagnostic sous Windows
+
+| Commande                        | Rôle                                        |
+|---------------------------------|---------------------------------------------|
+| `ipconfig`                      | Affiche l’adresse IP actuelle               |
+| `ipconfig /all`                 | Affiche aussi les détails : MAC, DHCP, DNS  |
+| `ipconfig /release`             | Libère l’adresse IP actuelle                |
+| `ipconfig /renew`               | Redemande une adresse IP via DHCP           |
+| `ping 192.168.1.1`              | Teste la connectivité avec la passerelle    |
+
+#### Outil graphique : 
+
+Vous pouvez aussi utiliser :
+
+- **Réseau et Internet** (accessible via les paramètres Windows)
+- **Réseau et Internet** (accessible via le Panneau de configuration)
+
+
+## Exemple de configuration IP typique (Windows)
+
+```txt
+Carte Ethernet Wi-Fi :
+
+   Suffixe DNS propre à la connexion. . . : localdomain
+   Adresse IPv4. . . . . . . . . . . . . .: 192.168.0.105
+   Masque de sous-réseau . . . . . . . . .: 255.255.255.0
+   Passerelle par défaut . . . . . . . . .: 192.168.0.1
+   Serveur DHCP. . . . . . . . . . . . . .: 192.168.0.1
+```
+
+## Résumé
+
+| Élément    | Fonction                                       |
+| ---------- | ---------------------------------------------- |
+| IP         | Adresse unique pour identifier une machine     |
+| Masque     | Indique la frontière entre réseau et hôte      |
+| Passerelle | Permet d’accéder à des réseaux extérieurs      |
+| DHCP       | Attribue automatiquement les paramètres réseau |
