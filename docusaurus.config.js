@@ -91,6 +91,28 @@ const config = {
           },
         ],
       },
+      algolia: {
+        // The application ID provided by Algolia
+        appId: '669M0YO6L1',
+
+        // Public API key: it is safe to commit it
+        apiKey: '82af2388064e1ea75126c600b48cf0a4',
+
+        indexName: 'archambaultv-profio',
+
+        // Optional: see doc section below
+        contextualSearch: true,
+
+        // Optional: Algolia search parameters
+        searchParameters: {},
+
+        // Optional: path for search page that enabled by default (`false` to disable it)
+        searchPagePath: 'search',
+
+        // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
+        insights: false,
+
+      },
       footer: {
         style: 'dark',
         // links: [
