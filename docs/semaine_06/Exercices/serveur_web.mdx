@@ -1,0 +1,101 @@
+---
+sidebar_position: 2
+sidebar_label: Ouvrir un port sur Windows 11
+description: Ouvrir un port sur Windows 11
+---
+
+# 🔥 Ouvrir un port sur Windows 11
+
+## 🎯 Objectif pédagogique
+
+- Savoir ouvrir/fermer un port sur Windows 11
+
+## 📜 Énoncé
+
+Dans le cadre de votre travail de développeur, il peut être nécessaire d’ouvrir
+un port sur votre ordinateur afin de permettre à une application de communiquer
+avec d’autres machines sur le réseau. Par exemple, si vous mettez en place un
+serveur web, il faudra ouvrir le port 80 pour que les utilisateurs puissent
+accéder à votre site.
+
+:::warning
+
+Dans cet exercice, nous allons ouvrir le port 80 pour permettre à un serveur web de
+fonctionner sur votre ordinateur. Le port 80 est le port par défaut pour le
+protocole HTTP. Dans un environnement de production, il est recommandé d'utiliser le port 443
+pour le protocole HTTPS, qui est sécurisé.
+
+:::
+
+### Étape 1 : Configurer votre VM en bridge
+
+- Assurez-vous que votre VM est configurée en mode bridge. Cela permettra à
+  votre VM d'avoir une adresse IP sur le même réseau que votre ordinateur hôte.
+  Sur VirtualBox, vous pouvez le faire en allant dans les paramètres de votre
+  VM, puis dans l'onglet "Réseau".
+
+### Étape 2 : Démarrer un serveur web sur votre VM
+
+- Installez Python sur votre VM si ce n'est pas déjà fait.
+- Créez un répertoire `web` sur votre VM dans votre répertoire
+  utilisateur.
+- Créez un fichier `index.html` dans ce répertoire avec le contenu suivant :
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello</title>
+</head>
+<body>
+  Hello World
+</body>
+</html>
+```
+
+- Ouvrez PowerShell et exécutez la commande suivante pour démarrer un serveur web
+  sur le port 80 :
+```powershell
+py -m http.server 80 --directory C:\Users\<votre_nom_utilisateur>\web
+```
+
+### Étape 3 : Testez depuis votre machine hôte
+
+Normalement, le port 80 est fermé par défaut sur Windows 11. Vous ne pourrez pas
+accéder à votre serveur web depuis votre machine hôte. Pour le vérifier, ouvrez
+un navigateur web et entrez l'adresse IP de votre VM dans la barre d'adresses.
+
+:::note
+
+Pour trouver l'adresse IP de votre VM, ouvrez une invite de commandes et
+exécutez la commande suivante :
+```powershell
+ipconfig
+```
+
+:::
+
+### Étape 4 : Ouvrir le port 80 sur Windows 11
+
+- Ouvrez le port 80 à l'aide du pare-feu de Windows.
+
+### Étape 5 : Testez à nouveau depuis votre machine hôte
+
+- Ouvrez un navigateur web et entrez l'adresse IP de votre VM dans la barre
+  d'adresse. Vous devriez voir le message "Hello World" s'afficher.
+
+### Étape 6 : Fermer le port 80 sur Windows 11
+
+- Fermez le port 80 à l'aide du pare-feu de Windows.
+- Testez à nouveau depuis votre machine hôte. Vous ne devriez plus voir le
+  message "Hello World" s'afficher.
+
+### Étape 7 : Fermer le serveur web
+
+- Fermez le serveur web en appuyant sur `Ctrl + C` dans la fenêtre PowerShell
+  où vous l'avez démarré.
+- Fermez la fenêtre PowerShell.
+
+---
+
+Bravo ! Vous avez réussi à ouvrir et fermer un port sur Windows 11 et peut-être
+même créé votre premier serveur web !
