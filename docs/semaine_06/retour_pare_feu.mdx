@@ -1,0 +1,138 @@
+---
+sidebar_position: 2
+sidebar_label: Retour exercice pare-feu
+description: Retour sur l'exercice sur le pare-feu
+---
+
+# Retour sur l'exercice sur le pare-feu
+
+Voici le résumé des 6 documents remis sur Omnivox. Vous avez fait un très bon
+travail !
+
+## Qu’est-ce qu’un pare-feu ?
+
+Un **pare-feu** (firewall) est un dispositif matériel ou logiciel qui se place
+entre un appareil (ou un réseau) et le reste du monde pour **filtrer le
+trafic** selon un ensemble de règles. Il permet :
+
+* de bloquer les connexions non sollicitées (intrusions, scans de port, exploits).
+* de contrôler quelles applications ou services peuvent émettre des connexions.
+* d’adapter automatiquement son niveau de protection au profil réseau (public, privé, domaine).
+
+
+## Fonctionnement général du pare-feu Windows
+
+### Inspection avec état
+
+Le pare-feu Windows est **avec état** : il suit l’état de chaque connexion
+TCP/UDP et autorise automatiquement le trafic de réponse à une connexion
+sortante déjà permise. Une connexion est un quadruplet d’adresses IP et de ports
+(source et destination). Par exemple pour une connexion sortante avec un serveur
+HTTPS, le quadruplet pourrait être :
+
+```
+192.168.2.10:50600 → 142.251.41.78:443
+```
+
+où 192.168.2.10 et l'adresse IP de l’ordinateur, 50600 est un port éphémère
+attribué par le système d’exploitation, 142.251.41.78 est l’adresse IP du
+serveur Google et 443 est le port HTTPS du serveur. 
+
+### Règles entrantes vs sortantes
+
+| Direction    | Rôle                                                         | Stratégie par défaut                                                                |
+| ------------ | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| **Entrante** | Contrôle ce qui **arrive** de l’extérieur vers l’ordinateur. | **Bloqué** (sauf exceptions expressément autorisées).                               |
+| **Sortante** | Contrôle ce qui **quitte** l’ordinateur vers le réseau.      | **Autorisé** (sauf règles bloquantes créées par l’utilisateur ou l’administrateur). |
+
+Une **règle entrante** peut par exemple autoriser le port 3389 (RDP) pour le
+bureau à distance ; une **règle sortante** peut bloquer `chrome.exe` pour
+empêcher la navigation Web.
+
+Cette stratégie par défaut « tout bloquer en entrée, tout autoriser en sortie » limite
+drastiquement la surface d’attaque tout en conservant l’usage normal
+d’Internet.
+
+## Configuration des règles : protocoles, ports et applications
+
+### Protocoles
+
+Il est possible de filtrer le trafic selon le protocole utilisé. Les plus
+courants sont :
+
+* **TCP** : fiable (accusés de réception), utilisé pour HTTP(S), SMTP, FTP, RDP…
+* **UDP** : non fiable mais rapide, utilisé pour DNS, VoIP, jeux en ligne, streaming…
+
+### Plages de ports
+
+De la même manière, il est possible de filtrer le trafic selon le port
+utilisé. Les ports sont numérotés de 0 à 65535 et sont classés en trois
+catégories :
+
+* `0-1023` : ports **bien connus** (HTTP 80, HTTPS 443, FTP 21, etc.).
+* `1024-49151` : ports **enregistrés** (ex. MySQL 3306).
+* `49152-65535` : ports **dynamiques/éphémères** attribués automatiquement par Windows.
+
+### Ciblage par application
+
+Une règle peut viser le **chemin complet de l’exécutable** (ex. `C:\Program Files\VideoLAN\VLC\vlc.exe`) plutôt qu’un port fixe : plus sûr et plus flexible, surtout si l’application ouvre plusieurs ports à la demande.
+
+
+## Profils réseau et impact
+
+| Profil                  | Contextes typiques           | Niveau de confiance  | Comportement                                                           |
+| ----------------------- | ---------------------------- | -------------------- | ---------------------------------------------------------------------- |
+| **Public** (par défaut) | Wi-Fi de café                | Faible               | Découverte réseau et partage désactivés, filtrage sévère.              |
+| **Privé**               | Réseau domestique            | Moyen                | Partage de fichiers/imprimantes possible, règles un peu plus ouvertes. |
+| **Domaine**             | Entreprise, Active Directory | Contrôlé par l’admin | Règles poussées par stratégie de groupe (GPO).                         |
+
+
+## Interfaces de gestion
+
+* **Interface graphique** : *Pare-feu Windows Defender avec fonctions avancées de sécurité*.
+* **PowerShell** : module `NetSecurity` (cmdlets `Get-NetFirewallRule`, `New-NetFirewallRule`, etc.) pour l’automatisation, le déploiement en masse et le scripting.
+
+  ```powershell
+  # Autoriser VLC pour tous les profils
+  New-NetFirewallRule -DisplayName "VLC In" -Direction Inbound `
+      -Program "C:\Program Files\VideoLAN\VLC\vlc.exe" -Action Allow -Profile Any
+  # Bloquer Chrome en sortie
+  New-NetFirewallRule -DisplayName "Block Chrome Out" -Direction Outbound `
+      -Program "C:\Program Files\Google\Chrome\Application\chrome.exe" -Action Block
+  ```
+
+---
+
+## Autoriser ou bloquer une application
+
+### Méthode graphique
+
+```
+Sécurité Windows ▸ Pare-feu & protection réseau ▸ Autoriser une application
+```
+
+### Méthode PowerShell
+
+```powershell
+# Autoriser (entrée)
+New-NetFirewallRule -DisplayName "Autoriser MonApp" `
+  -Direction Inbound -Program "C:\Chemin\MonApp.exe" -Action Allow
+# Bloquer (sortie)
+New-NetFirewallRule -DisplayName "Bloquer MonApp" `
+  -Direction Outbound -Program "C:\Chemin\MonApp.exe" -Action Block
+```
+
+
+## Journalisation et dépannage
+
+* **Activer les journaux** :
+
+  ```powershell
+  Set-NetFirewallProfile -Profile Domain,Private,Public -LogAllowed True -LogBlocked True
+  ```
+* **Chemin par défaut** des logs :
+  `C:\Windows\System32\LogFiles\Firewall\firewall.log`
+* Dans la console graphique : *Pare-feu Windows Defender > Paramètres avancés >
+  Propriétés du Pare-feu > Journalisation*. Les journaux indiquent l’heure, le
+  protocole, l’adresse source/destination, le port et l’action (ALLOW/BLOCK),
+  utile pour diagnostiquer des problèmes de connexion.
