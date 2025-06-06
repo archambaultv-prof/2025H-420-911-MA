@@ -1,0 +1,60 @@
+---
+sidebar_position: 2
+sidebar_label: Script CMD
+description: Écrire un script batch pour afficher les informations matérielles d'un ordinateur sous Windows.
+---
+
+
+# 🗃️ Script de sauvegarde automatique
+
+## 🎯 Objectif pédagogique
+
+- Apprendre à écrire un script batch pour automatiser des tâches courantes.	
+
+## 📜 Énoncé
+
+Écrivez un script nommé `sauvegarde.bat` qui automatise la sauvegarde de
+tous les fichiers texte (`.txt`) présents dans un dossier précis
+(ex: `C:\Utilisateurs\VotreNom\Documents`) vers un dossier de sauvegarde
+(ex: `C:\Sauvegardes\`).
+
+Votre script devra effectuer les tâches suivantes :
+
+1. Vérifier si le dossier de sauvegarde existe ; sinon, le créer.
+2. Copier tous les fichiers `.txt` vers ce dossier.
+3. Afficher clairement un message de succès ou d’échec selon le résultat de l’opération.
+4. À la fin, afficher le nombre de fichiers copiés.
+
+Le script devra garder la fenêtre CMD ouverte après exécution pour visualiser le résultat.
+
+### ⚙️ **Commandes suggérées :**
+
+* `if exist` : Vérifier si un dossier existe.
+* `mkdir` : Créer un dossier.
+* `copy` : Copier des fichiers.
+* `dir` : Lister les fichiers de manière compacte.
+
+### 🖥️ Exemple de résultat attendu
+
+Lorsque vous lancez le fichier `sauvegarde.bat`, voici ce que vous devriez voir :
+
+```
+====================================
+        Sauvegarde Automatique
+====================================
+
+Création du dossier de sauvegarde...
+Le dossier existe déjà.
+
+Copie des fichiers texte en cours...
+3 fichier(s) copié(s).
+
+Sauvegarde terminée avec succès !
+
+Appuyez sur une touche pour continuer...
+```
+
+
+### 🚩 Bonus
+
+* Ajoutez la date du jour au dossier de sauvegarde (ex : `C:\Sauvegardes\2025-06-06\`).
