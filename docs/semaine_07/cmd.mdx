@@ -1,0 +1,270 @@
+---
+sidebar_position: 2
+sidebar_label: Introduction à CMD
+description: Introduction à l'utilisation de CMD (Invite de commandes) sous Windows.
+---
+
+# Introduction à CMD
+
+## Qu'est-ce qu'un terminal ?
+
+Un terminal est une interface utilisateur qui permet d'interagir avec un
+système informatique (système d'exploitation) via des commandes textuelles. Contrairement à une
+interface graphique (GUI), un terminal reçoit des commandes entrées
+manuellement par l'utilisateur et retourne du texte en réponse.
+
+Les terminaux offrent généralement :
+
+* Accès direct à la gestion du système.
+* Automatisation de tâches répétitives.
+* Dépannage rapide du système.
+
+## Histoire et différences entre CMD et PowerShell
+
+Windows propose [deux principaux
+interpréteurs](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands)
+de commandes : **CMD** et **PowerShell**.
+
+### CMD
+
+CMD (Command Prompt), aussi appelé "Invite de commandes" en français, est
+l'interpréteur de commandes standard sous Windows depuis MS-DOS.
+
+* Origine : dérivé directement de MS-DOS.
+* Langage simple basé sur des commandes prédéfinies.
+* Idéal pour les scripts basiques et la compatibilité ascendante.
+
+### PowerShell
+
+[PowerShell](https://learn.microsoft.com/en-us/powershell/) est un shell
+moderne développé par Microsoft pour combler les lacunes de CMD.
+
+* Origine : Introduit avec Windows Vista en 2006.
+* Basé sur .NET Framework, supportant des commandes complexes et orientées objet.
+* Utilise des cmdlets (command-lets) pour une flexibilité accrue.
+
+### Pourquoi choisir CMD ou PowerShell ?
+
+* **CMD** : scripts simples, compatibilité rapide et tâches basiques.
+* **PowerShell** : tâches complexes, automatisation avancée et administration système.
+
+## CMD : Syntaxe et commandes essentielles
+
+### Syntaxe générale
+
+```batch
+commande [options] [arguments]
+```
+
+### Commandes fréquentes
+
+Voici une liste des [commandes](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands#command-line-reference-a-z) les plus courantes dans CMD :
+
+| Commande | Description                                      |
+| -------- | ------------------------------------------------ |
+| `dir`    | Liste les fichiers et répertoires                |
+| `cd`     | Change le répertoire courant                     |
+| `copy`   | Copie un fichier                                 |
+| `move`   | Déplace un fichier                               |
+| `del`    | Supprime un fichier                              |
+| `mkdir`  | Crée un répertoire                               |
+| `rmdir`  | Supprime un répertoire vide                      |
+| `type`   | Affiche le contenu d'un fichier texte            |
+| `echo`   | Affiche du texte                                 |
+| `set`    | Affiche ou définit des variables d'environnement |
+| `cls`    | Efface l'écran                                   |
+
+#### Exemples
+
+Lister les fichiers :
+
+```batch
+dir
+```
+
+Changer de dossier :
+
+```batch
+cd C:\Users\Vincent\Documents
+```
+
+Copier un fichier :
+
+```batch
+copy fichier1.txt fichier2.txt
+```
+
+
+### Options dans CMD : Utilisation du caractère `/`
+
+Contrairement aux terminaux Unix/Linux (comme **bash**) où les options d'une
+commande sont indiquées par un tiret `-` ou deux tirets `--`, CMD utilise
+traditionnellement le caractère barre oblique `/`.
+
+Par exemple, sous Bash (Linux ou Mac) :
+
+```bash
+ls -l -a
+```
+
+Mais sous CMD (Windows) :
+
+```batch
+dir /w /p
+```
+
+#### Exemple de commandes CMD avec options :
+
+| Commande CMD               | Signification de l'option                                       |
+| -------------------------- | --------------------------------------------------------------- |
+| `dir /w`                   | Afficher les fichiers et dossiers en format large (colonnes).   |
+| `dir /p`                   | Afficher les fichiers page par page, en pause.                  |
+| `copy /y`                  | Copier un fichier sans demander confirmation pour écraser.      |
+| `del /q`                   | Supprimer les fichiers sans confirmation.                       |
+| `taskkill /IM notepad.exe` | Terminer une application spécifique (`IM` signifie Image Name). |
+
+
+### Obtenir de l'aide sur les commandes (`/ ?`)
+
+Contrairement à Unix ou Bash, où l'option `--help` permet d'obtenir de l'aide
+sur une commande, l'équivalent sous CMD est d'utiliser l'option `/?`.
+
+#### Syntaxe générale :
+
+```batch
+commande /?
+```
+
+Cette commande affiche une description détaillée ainsi que les différentes
+options disponibles pour une commande spécifique.
+
+#### Exemple :
+
+Pour obtenir l'aide de la commande `dir`, tapez :
+
+```batch
+dir /?
+```
+
+### Variables CMD
+
+Une variable CMD est une référence temporaire permettant de stocker des
+informations ou des valeurs qui peuvent être utilisées ultérieurement dans une
+même session CMD ou dans un script batch.
+
+* **Syntaxe** :
+
+```batch
+set nom_variable=valeur
+```
+
+* **Exemple simple** :
+
+```batch
+set utilisateur=Vincent
+echo Bonjour %utilisateur%
+```
+
+Par défaut, les variables définies avec la commande `set` dans une instance de
+CMD ne sont **pas visibles** dans une autre instance ouverte simultanément.
+Chaque instance de CMD maintient ses propres variables indépendamment des
+autres. Pour créer une variable d'environnement permanente (qui sera visible
+par toutes les nouvelles sessions CMD), il faut utiliser le panneau de
+configuration Windows ou l'utilitaire
+[`setx`](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/setx)
+:
+
+```batch
+setx utilisateur Vincent
+```
+
+## Scripts batch (`.bat`)
+
+Les fichiers batch permettent d'automatiser des tâches répétitives.
+
+**Exemple complet :**
+
+Créer un fichier nommé `backup.bat` :
+
+```batch
+@echo off
+echo Démarrage de la sauvegarde...
+
+set source=C:\Users\Vincent\Documents\Important
+set destination=D:\Backup\Documents\Important
+
+if not exist %destination% mkdir %destination%
+
+copy %source%\*.txt %destination%
+
+echo Sauvegarde terminée.
+pause
+```
+
+### Exécution de scripts batch
+
+* Double-cliquer sur le fichier `.bat`.
+* Depuis CMD : `backup.bat`.
+
+### Références
+
+Il existe de nombreuses ressources pour apprendre à écrire des scripts batch,
+notamment la [documentation officielle de
+Microsoft](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands)
+et d'autres tutoriels en ligne comme [tutorialspoint](https://www.tutorialspoint.com/batch_script/index.htm).
+
+## Manipulation avancée avec CMD
+
+### Redirection
+
+* `>` : envoie la sortie vers un fichier.
+* `>>` : ajoute à un fichier existant.
+
+Exemple :
+
+```batch
+dir > liste_fichiers.txt
+```
+
+### Pipes (`|`)
+
+Permet d'envoyer la sortie d'une commande vers une autre.
+
+```batch
+dir | find "rapport"
+```
+
+## Gestion des tâches
+
+Lister les processus :
+
+```batch
+tasklist
+```
+
+Terminer un processus :
+
+```batch
+taskkill /IM notepad.exe
+```
+
+## Gestion du réseau
+
+Afficher les informations réseau :
+
+```batch
+ipconfig
+```
+
+Vérifier la connexion réseau :
+
+```batch
+ping google.com
+```
+
+## Conclusion
+
+CMD est un outil essentiel pour les utilisateurs Windows cherchant à
+automatiser rapidement des tâches simples. Malgré ses limitations par rapport à
+PowerShell, sa simplicité et sa rapidité en font un bon choix pour des tâches
+courantes et des scripts simples.
