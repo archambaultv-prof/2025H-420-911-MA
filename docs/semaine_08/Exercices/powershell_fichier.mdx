@@ -1,0 +1,105 @@
+---
+sidebar_position: 1
+sidebar_label: PowerShell et manipulation de fichiers
+description: PowerShell et manipulation de fichiers
+---
+
+
+# 🗃️ PowerShell et manipulation de fichiers
+
+- Seul, à votre rythme
+
+## 🎯 Objectif pédagogique
+
+* Manipuler des fichiers et répertoires via PowerShell
+* Automatiser des tâches simples avec des scripts
+* Utiliser les chemins relatifs et absolus
+* Rechercher des fichiers et du contenu textuel dans une arborescence
+* Afficher et modifier les permissions des fichiers
+
+## 📜 Énoncé
+
+### 🔧 Contexte
+
+Un administrateur système vous confie une série de tâches à réaliser via
+PowerShell. Ces tâches pourraient être automatisées dans un petit script. Vous
+devez créer un environnement de travail, manipuler des fichiers et répertoires,
+le tout en utilisant PowerShell.
+
+## 📁 Étape 1 – Préparer un environnement
+
+1. Ouvrez PowerShell dans un dossier de travail de votre choix.
+2. Créez la structure suivante avec PowerShell :
+
+```
+projet/
+├── notes/
+├── archives/
+└── temp/
+```
+
+3. Dans le dossier `notes`, créez 3 fichiers texte nommés `cours1.txt`, `cours2.txt`, `cours3.txt`.
+   Chacun de ces fichiers doit contenir une phrase différente, incluant le mot **important** dans l’un d’eux.
+   Insérez le contenu directement dans les fichiers avec PowerShell.
+4. Dans le dossier `temp`, créez un fichier texte nommé `temp.txt` avec le contenu suivant :
+   ```
+   Ce fichier est temporaire.
+   ```
+
+Commandes utiles : 
+* `New-Item` pour créer des fichiers et des dossiers
+* `Set-Content` pour écrire du contenu dans les fichiers
+* `Get-ChildItem` pour lister les fichiers et dossiers
+
+## 📂 Étape 2 – Recherches et chemins
+
+1. Recherchez tous les fichiers `.txt` dans le dossier `projet`, **même dans les sous-dossiers**.
+2. Recherchez le mot `important` dans **tous** les fichiers texte.
+3. Affichez le chemin absolu de chacun des fichiers `.txt`.
+
+Commandes utiles :
+* `Get-ChildItem -Recurse` pour lister les fichiers récursivement
+* `Select-String` pour rechercher du texte dans les fichiers
+* `Resolve-Path` pour obtenir le chemin absolu des fichiers
+
+
+## 🔄 Étape 3 – Automatisation et englobement simple
+
+1. Écrivez un script PowerShell nommé `gestion.ps1` qui fait les opérations suivantes :
+
+   * Copie tous les fichiers de `notes` vers `archives`
+   * Supprime le contenu du dossier `temp` s’il existe (sans supprimer `temp` lui-même)
+   * Renomme les fichiers copiés dans `archives` en ajoutant `_backup` avant `.txt`
+
+     * Exemple : `cours1.txt` → `cours1_backup.txt`
+
+Commandes utiles :
+* `Test-Path` pour vérifier l’existence d’un dossier ou d’un fichier
+* `Copy-Item` pour copier des fichiers
+* `Remove-Item` pour supprimer des fichiers ou dossiers
+* `Rename-Item` pour renommer des fichiers
+
+
+Exécutez plusieurs fois votre script pour vérifier qu’il est idempotent (ne casse rien s’il est relancé plusieurs fois).
+
+
+## 🧪 Étape 4 – Vérification automatique
+
+Ajoutez à votre script une commande qui :
+
+* Compte et affiche le nombre de fichiers dans `archives`
+* Affiche un message **"Succès : tous les fichiers ont été sauvegardés."** si ce nombre est 3
+
+
+## 🔐 Étape 5 – Permissions NTFS (droits d’accès)
+
+1. Dans le dossier `notes/`, enlevez à l’utilisateur courant **le droit de
+   lecture** sur un des fichiers. Ceci doit être fait en utilisant PowerShell.
+
+2. Essayez de lire ce fichier avec `Get-Content`. Que se passe-t-il ?
+
+3. Rétablissez ensuite la permission avec PowerShell.
+
+4. Donnez temporairement à **tout le dossier `archives/`** une permission en lecture-écriture seulement (pas suppression).
+
+5. Tentez ensuite d’effacer un fichier de `archives/` avec `Remove-Item`. Que constatez-vous ?
