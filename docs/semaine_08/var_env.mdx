@@ -1,0 +1,94 @@
+---
+sidebar_position: 3
+sidebar_label: Variables d'environnement
+description: Variables d'environnement
+---
+
+# Variables d'environnement
+
+## Contexte et historique
+
+Les variables d’environnement sont un mécanisme essentiel dans les systèmes
+d’exploitation modernes, permettant de stocker des informations de configuration
+et de transmettre des paramètres aux processus. Elles ont été introduites dès les
+premiers systèmes Unix et ont été adoptées par Windows avec l’arrivée de Windows NT.
+
+
+## Pourquoi utiliser des variables d’environnement
+
+* **Paramétrage global**
+
+  * Chemins d’accès aux exécutables (`PATH`), répertoire temporaire (`TEMP`/`TMP`), langue et format régional (`LANG`).
+* **Isolation et portabilité**
+
+  * Scripts et applications peuvent lire leurs paramètres sans hardcoder des chemins absolus.
+* **Propagation aux processus enfants**
+
+  * Toute variable définie dans un processus parent est héritée par ses enfants.
+
+
+## Types et portée
+
+| Portée          | Persistant ? | Accessible depuis                                     | Exemple de variable                       |
+| --------------- | ------------ | ----------------------------------------------------- | ----------------------------------------- |
+| **Processus**   | Non          | Processus courant                                     | `$env:MYVAR = "session"`                  |
+| **Utilisateur** | Oui          | Tout processus de l’utilisateur (nouvelle session)    | `Set-Variable USER` via GUI ou PowerShell |
+| **Machine**     | Oui          | Tout utilisateur et tout processus (nouvelle session) | `Set-Variable MACHINE`                    |
+
+* **Session (processus)** : modification temporaire, disparaît à la fermeture.
+* **Utilisateur** : stockée dans le registre sous `HKCU:\Environment`.
+* **Système (Machine)** : stockée dans le registre sous `HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment`.
+
+
+## Gestion via l’interface graphique
+
+Rechercher « Environnement » dans les réglages Windows.
+
+
+## Le provider Env dans PowerShell
+
+PowerShell expose les variables d’environnement comme un « PSDrive » appelé `Env:`.
+
+### Lister et lire
+
+```powershell
+# Lister toutes les variables d’environnement
+Get-ChildItem Env:
+
+# Lire une variable précise
+Get-Item Env:PATH
+# ou
+$env:PATH
+```
+
+### Utilitaire `setx`
+
+Le binaire Windows `setx` permet d’écrire rapidement :
+
+```powershell
+# Définit pour l’utilisateur (par défaut)
+setx LOG_LEVEL "DEBUG"
+
+# Définit pour la machine (avec /M, nécessite Admin)
+setx NODE_ENV "production" /M
+```
+
+> **Note** : `setx` ne modifie pas la session actuelle — il enregistre pour les futures sessions.
+
+
+
+## Bonnes pratiques
+
+1. **Nommer en MAJUSCULES** et utiliser `_` pour séparer les mots.
+2. **Limiter la taille** de `PATH` : trop long peut casser certains programmes.
+3. **Documenter** dans un script ou un README toute modification persistante.
+4. **Sauvegarder** l’état avant grosses modifications (export du registre).
+5. **Test en VM** : valider les scripts sur vos machines virtuelles avant déploiement.
+
+
+### À retenir
+
+* Les variables d’environnement sont un mécanisme fondamental pour transmettre des paramètres aux processus.
+* Elles ont trois portées : **Session**, **Utilisateur**, **Machine**.
+* PowerShell et `setx` offrent des moyens puissants pour lire, définir et supprimer ces variables.
+* Toujours tester sur VM et documenter vos changements !
