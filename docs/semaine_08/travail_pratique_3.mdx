@@ -1,0 +1,100 @@
+---
+sidebar_position: 4
+sidebar_label: Travail pratique 3
+description: Travail pratique 3
+---
+
+# Configuration automatisée d'un poste de travail
+
+## Contexte
+
+Vous êtes administrateur système dans une entreprise qui accueille
+régulièrement de nouveaux employés. Afin de simplifier la configuration
+initiale des postes de travail, vous devez créer un script **PowerShell** qui
+automatise ces tâches.
+
+:::danger
+
+Ce script doit être exécuté sur une machine virtuelle Windows 11. Vous
+pouvez donc librement modifier le registre et les paramètres système sans
+crainte.
+
+:::
+
+## Objectifs du travail
+
+Votre script PowerShell devra réaliser automatiquement les actions suivantes :
+
+### 1. Création avancée d'une structure de dossiers
+
+Votre script doit créer automatiquement la structure de dossiers suivante dans
+le répertoire personnel de l’utilisateur (`$HOME`) :
+
+```
+$HOME
+│
+├── Documents_Entreprise
+│   ├── Projets
+│   ├── Temporaire
+└── Ressources
+    └── Documentation
+        └── Configuration_VPN.md
+```
+
+Le dossier `Ressources` et tous les sous-dossiers et fichiers qu'il contient
+doivent être en lecture seule. Le fichier `Configuration_VPN.md` doit être créé
+avec un contenu fictif. Ce contenu n'est pas évalué, une simple phrase suffit.
+
+### 2. Configuration avancée des variables d’environnement
+
+Votre script doit créer ou modifier les variables d’environnement suivantes :
+
+* `ENTREPRISE_FOLDER` qui pointe vers le dossier `Documents_Entreprise` créé précédemment.
+* `ENTREPRISE_BACKUP_SERVER` qui doit contenir l’adresse fictive du serveur de sauvegarde (`\\backup.entreprise.local\partage`).
+* `ENTREPRISE_TEMP_PATH` qui pointe vers le dossier `$HOME\Documents_Entreprise\Temporaire`.
+
+Ces variables doivent être disponibles pour l’utilisateur et non seulement pour le processus en cours.
+
+### 3. Modification avancée des clés de registre Windows
+
+Votre script doit
+[sauvegarder](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/reg-export)
+automatiquement dans le dossier `$HOME\Documents_Entreprise\Temporaire` les
+clés de registre qui seront modifiées dans un fichier `.reg` avec un
+horodatage. 
+
+Votre script doit
+[modifier](https://learn.microsoft.com/en-us/powershell/scripting/samples/working-with-registry-entries?view=powershell-5.1)
+automatiquement les paramètres suivants dans le registre Windows :
+
+* Activer l’affichage des extensions de fichiers (clé : `HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced`, valeur : `HideFileExt = 0`)
+* Activer l’affichage des fichiers et dossiers cachés (clé : `HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced`, valeur : `Hidden = 1`)
+
+### 4. Vérification automatique et rapport
+
+Votre script doit inclure une fonctionnalité de vérification automatique des
+tâches effectuées :
+
+* Vérifier que les dossiers ont été créés.
+* Vérifier que les variables d’environnement sont définies correctement.
+* Vérifier que les clés de registre ont été modifiées.
+
+Le script devra générer un rapport confirmant que toutes les étapes ont été
+réalisées avec succès. Ce rapport doit être écrit dans un fichier texte
+(`rapport_configuration.txt`) dans le dossier `$HOME\Documents_Entreprise\Temporaire`.
+
+### Livrables
+
+Vous devez remettre :
+
+* Le script PowerShell **commenté**.
+
+### Critères d’évaluation
+
+* Les étapes 1 à 4 valent chacune 25 points.
+* Pour chaque étape, un code bien commenté et qui fonctionne correctement donne tous les points.
+* Pour chaque étape, un code qui fonctionne mais qui n'est pas commenté obtient les 2/3 des points.
+* Si votre code ne fonctionne pas pour une étape en particulier, vous pouvez
+  obtenir des points partiels si vous avez commenté votre code et que vous
+  expliquez ce qui ne fonctionne pas.
+* Pour chaque étape, aucun point ne sera attribué si le code ne fonctionne pas et qu'aucune explication n'est fournie.
