@@ -1,0 +1,57 @@
+---
+sidebar_position: 1
+sidebar_label: Communication interprocessus
+description: Communication interprocessus
+---
+
+# 📧 Communication interprocessus
+
+- **Durée estimée :** 1 h 30 
+
+## 🎯 Objectif pédagogique
+
+- Apprendre par soi-même à l'aide de la documentation officielle de Microsoft et autres.
+- Comprendre les mécanismes de communication interprocessus (IPC) sous Windows et Linux/WSL.
+
+## 📜 Énoncé
+
+### Partie 1 : Vidéo d'introduction
+
+Regardez la vidéo suivante pour une introduction aux mécanismes de communication interprocessus (IPC) :
+[IPC: To Share Memory Or To Send Messages](https://www.youtube.com/watch?v=Y2mDwW2pMv4)
+
+### Partie 2 : Lectures
+
+#### Tutoriels
+
+- [tutorialspoint](https://www.tutorialspoint.com/inter_process_communication/index.htm) 
+
+#### Windows
+
+- [Anglais](https://learn.microsoft.com/en-us/windows/win32/ipc/interprocess-communications)
+- [Français](https://learn.microsoft.com/fr-fr/windows/win32/ipc/interprocess-communications)
+
+Notamment la partie pipes et Windows Sockets.
+
+#### Linux / WSL (POSIX IPC)
+
+- https://tldp.org/LDP/tlk/ipc/ipc.html
+
+
+### Partie 3 : Pratiques
+
+Python fournit [plusieurs modules](https://docs.python.org/3/library/ipc.html)
+pour la communication interprocessus (IPC).
+
+La documentation pour le module Socket [fournit des
+exemples](https://docs.python.org/3/library/socket.html#example). Exécutez
+chacun des exemples et analysez le code pour comprendre comment fonctionne la
+communication interprocessus en Python.
+
+:::tip
+
+Contrairement à l'exemple de la documentation, vous ne communiquerez pas avec
+daring.cwi.nl. Quel est votre adresse IP locale ... 127.?.?.? 🤔
+
+:::
+
