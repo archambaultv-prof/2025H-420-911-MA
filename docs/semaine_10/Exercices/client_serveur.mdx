@@ -1,0 +1,241 @@
+---
+sidebar_position: 2
+sidebar_label: Client-Serveur
+description: Client-Serveur
+---
+
+# 📧 Communication interprocessus : Client et Serveur
+
+## 🎯 Objectif pédagogique
+
+- Comprendre les mécanismes de communication interprocessus (IPC) à l'aide de sockets.
+- Créer un serveur et un client en Python.
+- Identifier le rôle du système d'exploitation dans la gestion des connexions réseau.
+
+## 📜 Énoncé
+
+Dans cet exercice, vous allez créer une simple application de communication
+entre un **client** et un **serveur** en utilisant des **sockets** en Python.
+
+### 🔧 Étape 1 – Créer un serveur simple
+
+Un serveur :
+
+- Ouvre une « porte » (appelée un **port**) sur votre ordinateur.
+- Attend qu'un client s'y connecte.
+- Reçoit les messages du client.
+
+#### Code du serveur
+
+Créez un fichier appelé `serveur.py` et copiez le code suivant :
+
+```python
+import socket
+
+# Crée un socket TCP
+serveur = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# L'adresse IP et le port à utiliser
+hote = 'localhost'
+port = 12345
+
+# Lier le socket à l'adresse
+serveur.bind((hote, port))
+
+# Écoute jusqu'à 1 connexion
+serveur.listen(1)
+print("[Serveur] En attente de connexion...")
+
+# Accepter la connexion
+connexion, adresse = serveur.accept()
+print(f"[Serveur] Connexion de {adresse}")
+
+# Réception des messages
+while True:
+    message = connexion.recv(1024).decode()
+    if message.lower() == "exit":
+        print("[Serveur] Fin de la communication.")
+        break
+    print(f"[Client] {message}")
+
+# Fermer les connexions
+connexion.close()
+serveur.close()
+```
+
+#### Test
+
+Ce programme ne fait rien tant qu'un client ne s'est pas connecté. Démarrez le serveur avec la commande :
+
+```bash
+python serveur.py
+```
+
+et connectez-vous avec votre navigateur web en allant à `http://localhost:12345`.
+
+:::tip
+
+Vous pouvez arrêter le serveur en appuyant sur `Ctrl+C` dans le terminal.
+
+:::
+
+### 💬 Étape 2 – Créer un client
+
+Un client :
+
+* Se connecte à un serveur (ici via `localhost` et le port).
+* Envoie des messages que vous tapez dans la console.
+
+#### 2.1 Code du client
+
+Créez un fichier `client.py` :
+
+```python
+import socket
+
+# Crée un socket TCP
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Se connecter au serveur
+client.connect(('localhost', 12345))
+print("[Client] Connecté au serveur. Tapez vos messages :")
+
+# Lire et envoyer les messages
+while True:
+    message = input(">>> ")
+    client.sendall(message.encode())
+    if message.lower() == "exit":
+        break
+
+# Fermer la connexion
+client.close()
+```
+
+#### 2.2 Test
+
+1. Dans un terminal : lancez `python serveur.py`
+2. Dans un **autre terminal** : lancez `python client.py`
+3. Échangez quelques messages.
+4. Tapez `exit` pour arrêter.
+
+
+### 🔁 Étape 3 – Communication dans les deux sens
+
+Actuellement, seul le client parle et le serveur écoute. Nous allons maintenant
+permettre au **serveur de répondre**.
+
+#### 3.1 Utiliser `threading` pour écouter et écrire en même temps
+
+Créez un fichier appelé `serveur2.py` et copiez le code suivant :
+
+```python
+import socket
+import threading
+
+def recevoir(connexion):
+    while True:
+        try:
+            message = connexion.recv(1024).decode()
+            if not message or message.lower() == "exit":
+                print("[Client] a quitté la conversation.")
+                print("[Serveur >>>] ", end="", flush=True)
+                break
+            print(f"[Client] {message}")
+            print("[Serveur >>>] ", end="", flush=True)
+        except:  # noqa: E722
+            break
+
+def envoyer(connexion):
+    while True:
+        try:
+            message = input("[Serveur >>>] ")
+            connexion.sendall(message.encode())
+            if message.lower() == "exit":
+                break
+        except:  # noqa: E722
+            break
+
+# Création du serveur
+serveur = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serveur.bind(('localhost', 12345))
+serveur.listen(1)
+
+print("[Serveur] En attente de connexion...")
+connexion, adresse = serveur.accept()
+print(f"[Serveur] Connecté à {adresse}")
+
+# Démarrage des threads
+thread1 = threading.Thread(target=recevoir, args=(connexion,))
+thread2 = threading.Thread(target=envoyer, args=(connexion,))
+thread1.start()
+thread2.start()
+
+thread1.join()
+thread2.join()
+connexion.close()
+serveur.close()
+```
+
+Créez un fichier appelé `client2.py` et copiez le code suivant :
+
+```python
+import socket
+import threading
+
+def recevoir(sock):
+    while True:
+        message = sock.recv(1024).decode()
+        if message.lower() == "exit":
+            print("[Serveur] a quitté la conversation.")
+            print("[Client >>>] ", end="", flush=True)
+            break
+        print(f"[Serveur] {message}")
+        print("[Client >>>] ", end="", flush=True)
+
+def envoyer(sock):
+    while True:
+        message = input("[Client >>>] ")
+        sock.sendall(message.encode())
+        if message.lower() == "exit":
+            break
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(('localhost', 12345))
+print("[Client] Connecté au serveur.")
+
+# Démarrage des threads
+thread1 = threading.Thread(target=recevoir, args=(client,))
+thread2 = threading.Thread(target=envoyer, args=(client,))
+thread1.start()
+thread2.start()
+
+thread1.join()
+thread2.join()
+client.close()
+```
+
+#### ✅ Résultat attendu
+
+1. Lancez `serveur2.py` dans un terminal.
+2. Lancez `client2.py` dans un autre.
+3. Essayez d’échanger des messages dans les deux sens.
+4. Fermez proprement avec `exit`.
+
+![Exemple de communication entre client et serveur](/img/exo_client_serveur.png)
+
+### 📝 Étape 4 – Le système d'exploitation
+
+Le système d'exploitation joue un rôle crucial dans la gestion des connexions
+réseau. Il gère les ressources, les ports, et assure que les données sont
+envoyées et reçues correctement. Il en est de même pour les threads, qui permettent
+d'exécuter plusieurs tâches en parallèle, comme écouter et envoyer des messages
+en même temps.
+
+Répondez aux questions suivantes :
+
+- Dans le code du serveur et du client, à quel moment le système
+  d'exploitation est-il impliqué ?
+- Est-ce que les threads sont gérés par le système d'exploitation (OS thread) ou par Python (application thread) ?
+- Pourquoi est-il important de fermer les connexions proprement ?
+- Que se passe-t-il si vous essayez de lancer le serveur plusieurs fois sur le même port sans le fermer ?
+- Que se passe-t-il si vous essayez de lancer le client avant le serveur ?
