@@ -1,0 +1,79 @@
+---
+sidebar_position: 1
+sidebar_label: Mémoire partagée
+description: Mémoire partagée
+---
+
+# 📧 Communication interprocessus : Mémoire partagée
+
+## 🎯 Objectif pédagogique
+
+- Comprendre les mécanismes de communication interprocessus (IPC) à l'aide de la mémoire partagée.
+- Identifier le rôle du système d'exploitation dans la gestion des connexions réseau.
+
+## 📜 Énoncé
+
+Dans cet exercice, vous allez créer une deux modules Python pour
+
+### 🔧 Étape 1 – Module Writer
+
+Créez un fichier appelé `writer.py` et copiez le code suivant :
+
+```python
+# writer.py
+from multiprocessing import shared_memory
+import time
+
+# Create a new shared memory block
+shm = shared_memory.SharedMemory(name="demo_shm", create=True, size=1024)
+
+# Write some bytes
+shm.buf[:10] = b"Hello IPC!"
+
+print("Writer: wrote to shared memory.")
+time.sleep(60)  # Give reader time to read it
+
+# Clean up
+shm.close()
+shm.unlink()  # Only the creating process should unlink
+```
+
+### 💬 Étape 2 – Module Reader
+
+Créez un fichier `reader.py` :
+
+```python
+# reader.py
+from multiprocessing import shared_memory
+
+# Connect to existing shared memory
+existing_shm = shared_memory.SharedMemory(name="demo_shm")
+
+# Read from it
+data = bytes(existing_shm.buf[:11])
+print("Reader: read from shared memory:", data.decode())
+
+existing_shm.close()
+```
+
+
+### 🔁 Étape 3 – Test
+
+
+
+### 📝 Étape 4 – Le système d'exploitation
+
+Le système d'exploitation joue un rôle crucial dans la gestion des connexions
+réseau. Il gère les ressources, les ports, et assure que les données sont
+envoyées et reçues correctement. Il en est de même pour les threads, qui permettent
+d'exécuter plusieurs tâches en parallèle, comme écouter et envoyer des messages
+en même temps.
+
+Répondez aux questions suivantes :
+
+- Dans le code du serveur et du client, à quel moment le système
+  d'exploitation est-il impliqué ?
+- Est-ce que les threads sont gérés par le système d'exploitation (OS thread) ou par Python (application thread) ?
+- Pourquoi est-il important de fermer les connexions proprement ?
+- Que se passe-t-il si vous essayez de lancer le serveur plusieurs fois sur le même port sans le fermer ?
+- Que se passe-t-il si vous essayez de lancer le client avant le serveur ?
