@@ -59,21 +59,24 @@ existing_shm.close()
 
 ### 🔁 Étape 3 – Test
 
+Pour tester, ouvrez deux terminaux. Dans le premier terminal, exécutez le module `writer.py` :
 
+```bash
+python writer.py
+```
+
+Dans le second terminal, exécutez le module `reader.py` :
+
+```bash
+python reader.py
+```
 
 ### 📝 Étape 4 – Le système d'exploitation
 
-Le système d'exploitation joue un rôle crucial dans la gestion des connexions
-réseau. Il gère les ressources, les ports, et assure que les données sont
-envoyées et reçues correctement. Il en est de même pour les threads, qui permettent
-d'exécuter plusieurs tâches en parallèle, comme écouter et envoyer des messages
-en même temps.
-
-Répondez aux questions suivantes :
-
-- Dans le code du serveur et du client, à quel moment le système
-  d'exploitation est-il impliqué ?
-- Est-ce que les threads sont gérés par le système d'exploitation (OS thread) ou par Python (application thread) ?
-- Pourquoi est-il important de fermer les connexions proprement ?
-- Que se passe-t-il si vous essayez de lancer le serveur plusieurs fois sur le même port sans le fermer ?
-- Que se passe-t-il si vous essayez de lancer le client avant le serveur ?
+- Quel est le rôle du système d'exploitation dans la gestion de la mémoire
+partagée ?
+- Quels processus peuvent accéder à la mémoire partagée nommée `demo_shm` ?
+- Que se passe-t-il si le processus `writer.py` est terminé avant que
+  `reader.py` ne puisse lire les données ?
+- Est-ce que le système d'exploitation gère la synchronisation entre les
+  processus qui accèdent à la mémoire partagée ?
