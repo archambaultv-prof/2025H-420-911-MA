@@ -1,0 +1,127 @@
+---
+sidebar_position: 2
+sidebar_label: Épreuve finale partie 2
+description: Épreuve finale partie 2
+---
+
+# Épreuve finale partie 2
+
+**Date de publication :** 2025-07-09 13h00<br></br>
+**Date de remise :** 2025-07-09 15h00<br></br>
+**Mode de remise :** Omnivox<br></br>
+**Modalité :** Épreuve individuelle<br></br>
+**Matériel autorisé :** Notes de cours, vos travaux pratiques et exercices, documentation en ligne, mais pas d'aide extérieure (pas de communication avec d'autres personnes)<br></br>
+**Utilisation de l'IA :** Selon la politique du Collège. Vous pouvez utiliser l'IA pour vous documenter, mais le code doit être entièrement écrit par vous-même.
+
+## Script de gestion automatisée des logs système
+
+### Contexte
+
+Vous êtes administrateur système dans une entreprise. Votre responsable vous
+demande de créer un script PowerShell pour automatiser la gestion des fichiers
+de logs. Ce script doit permettre de nettoyer, organiser et analyser
+les logs de façon régulière.
+
+
+### Objectifs du travail (100 points)
+
+Votre script PowerShell devra réaliser automatiquement les actions suivantes :
+
+#### 1. Création de l'environnement de travail (25 points)
+
+Votre script doit utiliser la variable d'environnement `ENTERPRISE_DATA` (déjà
+définie avec un chemin valide, par exemple `C:\EnterpriseLogs`) pour créer automatiquement la
+structure de dossiers suivante dans `$env:ENTERPRISE_DATA\AdminLogs` :
+
+```
+$env:ENTERPRISE_DATA\AdminLogs
+│
+├── Logs_Actuels
+│   ├── Systeme
+│   ├── Applications
+│   └── Securite
+├── Archives
+│   └── Anciens
+└── Rapports
+```
+
+:::warning
+
+Il se pourrait que les dossiers existent déjà. Votre script doit vérifier leur
+existence et ne pas causer d'erreurs si les dossiers sont déjà présents.
+
+:::
+
+Ensuite, le script doit également créer 5 fichiers de logs fictifs dans le dossier `Logs_Actuels\Systeme` :
+- `system_2025-07-01.log` (contenu : "INFO: Démarrage système réussi")
+- `system_2025-07-05.log` (contenu : "ERROR: Erreur disque dur")
+- `system_2025-07-08.log` (contenu : "WARNING: Mémoire faible")
+- `system_2025-07-09.log` (contenu : "INFO: Système à jour")
+- `old_system_2024-12-15.log` (contenu : "INFO: Log ancien")
+
+
+#### 2. Analyse et recherche dans les logs (25 points)
+
+Votre script doit :
+
+- Rechercher tous les fichiers `.log` dans l'arborescence `$env:ENTERPRISE_DATA\AdminLogs\Logs_Actuels`
+- Créer une liste des fichiers contenant le mot "ERROR" et l'enregistrer dans
+  `$env:ENTERPRISE_DATA\AdminLogs\Rapports\erreurs_trouvees.txt`
+
+#### 3. Archivage automatique (25 points)
+
+Votre script doit :
+
+- Identifier tous les fichiers de logs datant de plus de 7 jours (utilisez la
+  date dans le nom du fichier)
+- Déplacer ces fichiers anciens vers le dossier `Archives\Anciens` et les renommer en ajoutant le préfixe `ARCHIVE_`
+  - Exemple : `old_system_2024-12-15.log` → `ARCHIVE_old_system_2024-12-15.log`
+
+:::warning
+
+Attention, il se pourrait que des fichiers soient déjà présents dans le dossier
+`Archives\Anciens`. Votre script ne doit pas ajouter `ARCHIVE_` aux fichiers déjà archivés.
+(Donc il ne devrait pas y avoir de fichier nommé `ARCHIVE_ARCHIVE_old_system_2024-12-15.log`)
+
+Votre script peut écraser un fichier existant si le nom est identique.
+
+:::
+
+#### 4. Rapport final et vérification (25 points)
+
+Votre script doit générer un rapport final (`rapport_gestion_logs.txt`) dans le
+dossier `$env:ENTERPRISE_DATA\AdminLogs\Rapports` contenant :
+
+- La date et l'heure d'exécution du script
+- Le nombre de fichiers archivés
+- Le nombre de fichiers contenant des erreurs
+- Un message de confirmation : "Script exécuté avec succès"
+
+### Exigences techniques
+
+1. **Structure du script** : Votre script doit être bien organisé avec des
+   commentaires expliquant chaque section importante.
+
+2. **Idempotence** : Le script doit pouvoir être exécuté plusieurs fois sans
+   causer d'erreurs.
+
+
+### Commandes PowerShell utiles
+
+- `New-Item` : Créer des fichiers et dossiers
+- `Set-Content` / `Add-Content` : Écrire dans des fichiers
+- `Get-ChildItem` : Lister les fichiers et dossiers
+- `Select-String` : Rechercher du texte dans les fichiers
+- `Copy-Item` : Copier des fichiers
+- `Move-Item` : Déplacer des fichiers
+- `Rename-Item` : Renommer des fichiers
+- `Test-Path` : Vérifier l'existence d'un fichier/dossier
+- `Get-Date` : Obtenir la date actuelle
+
+
+### Livrable
+
+Vous devez remettre sur Omnivox votre script PowerShell nommé
+`gestion_logs.ps1`.
+
+**Bonne chance !**
